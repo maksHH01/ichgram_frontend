@@ -1,14 +1,8 @@
 import styles from "./LoginPage.module.css";
-
-import { Link } from "react-router-dom";
+import Login from "../../../shared/components/Authentification/Login/Login";
 
 const LoginPage = () => {
-  return (
-    <>
-      <h1>Login page</h1>
-      <Link to="/signup">Регистрация</Link>
-    </>
-  );
+  return <Login />;
 };
 
 export default LoginPage;

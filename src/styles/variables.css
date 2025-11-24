@@ -8,8 +8,9 @@
   --dark-blue-text: #00376b;
   --grey-text-color: #737373;
   --main-text-black-color: #262626;
+  --grey-text-hover: #000000;
 
-  --border-grey-color: #dbdbdb;
+  --separator-grey-color: #dbdbdb;
 
   --grey-background-color: #efefef;
 }
