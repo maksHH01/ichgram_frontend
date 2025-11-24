@@ -1,0 +1,15 @@
+:root {
+  --white-background: #ffffff;
+  --button-main-blue: #0095f6;
+  --input-background-color: #fafafa;
+  --error-message-color: #ff0014;
+  --delete-button-color: #ed4956;
+
+  --dark-blue-text: #00376b;
+  --grey-text-color: #737373;
+  --main-text-black-color: #262626;
+
+  --border-grey-color: #dbdbdb;
+
+  --grey-background-color: #efefef;
+}
