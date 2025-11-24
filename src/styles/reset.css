@@ -7,6 +7,8 @@
 html,
 body {
   height: 100%;
+  background-color: var(--white-background);
+  font-size: var(--main-font-size);
 }
 
 img {

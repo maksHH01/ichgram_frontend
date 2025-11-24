@@ -54,6 +54,7 @@
 .errorMessage {
   color: var(--error-message-color);
   text-align: start;
+  font-size: 12px;
 }
 
 .separatorContainer {
@@ -87,11 +88,15 @@
   text-decoration: none;
 }
 
+.link:hover {
+  color: var(--button-main-blue);
+}
+
 .signupCard {
   background-color: white;
   border: 1px solid var(--separator-grey-color);
   text-align: center;
-  padding: 20px;
+  padding: 22px;
 }
 
 .signupText {
@@ -99,6 +104,11 @@
   text-decoration: none;
   color: var(--button-main-blue);
   font-weight: 600;
+}
+
+.signupText:hover {
+  color: var(--dark-blue-text);
+  text-decoration: underline;
 }
 
 .subtitle {
