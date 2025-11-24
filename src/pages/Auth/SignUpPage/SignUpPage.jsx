@@ -1,13 +1,9 @@
-import styles from "./SignUpPage.module.css";
-import { Link } from "react-router-dom";
+import SignUp from "../../../shared/components/Authentification/SignUp/SignUp";
 
 const SignUpPage = () => {
   return (
     <>
-      <h1>SignUp page</h1>
-      <Link to="/" className={styles.link}>
-        Войти
-      </Link>
+      <SignUp />
     </>
   );
 };

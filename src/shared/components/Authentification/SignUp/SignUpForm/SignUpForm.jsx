@@ -1,0 +1,263 @@
+// import styles from "../../Authentificate.module.css";
+
+// import { useForm } from "react-hook-form";
+
+// import TextField from "../../../../layouts/TextField/TextField";
+// import Button from "../../../../layouts/Button/Button";
+
+// const SignUpForm = ({ submitForm }) => {
+//   const {
+//     register,
+//     handleSubmit,
+//     reset,
+//     setError,
+//     formState: { errors },
+//   } = useForm({
+//     mode: "onChange",
+//   });
+
+//   const onSubmit = async (data) => {
+//     const result = await submitForm(data);
+
+//     if (result.success) {
+//       reset();
+//       return;
+//     }
+
+//     if (result.error) {
+//       const msg = result.error.toLowerCase();
+
+//       if (msg.includes("email")) {
+//         setError("email", { type: "server", message: result.error });
+//       } else if (msg.includes("username")) {
+//         setError("username", { type: "server", message: result.error });
+//       } else {
+//         setError("password", { type: "server", message: result.error });
+//       }
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+//       <div className={styles.formfields}>
+//         <TextField
+//           placeholder="Email"
+//           type="email"
+//           {...register("email", {
+//             required: "Enter your email",
+//             pattern: {
+//               value: /^[\w.-]+@[\w.-]+\.\w+$/,
+//               message: "Invalid email",
+//             },
+//           })}
+//         />
+//         {errors.email && (
+//           <p className={styles.errorMessage}>{errors.email.message}</p>
+//         )}
+
+//         <TextField
+//           placeholder="Fullname"
+//           {...register("fullname", {
+//             required: "Enter your name",
+//             minLength: {
+//               value: 2,
+//               message: "Enter min. 2 symbols",
+//             },
+//           })}
+//         />
+//         {errors.fullname && (
+//           <p className={styles.errorMessage}>{errors.fullname.message}</p>
+//         )}
+
+//         <TextField
+//           placeholder="Username"
+//           {...register("username", {
+//             required: "Enter your username",
+//             minLength: {
+//               value: 3,
+//               message: "Enter min. 3 symblos",
+//             },
+//           })}
+//         />
+//         {errors.username && (
+//           <p className={styles.errorMessage}>{errors.username.message}</p>
+//         )}
+
+//         <TextField
+//           placeholder="Password"
+//           type="password"
+//           {...register("password", {
+//             required: "Enter your password",
+//             minLength: {
+//               value: 6,
+//               message: "Must be at least 6 characters",
+//             },
+//           })}
+//         />
+//         {errors.password && (
+//           <p className={styles.errorMessage}>{errors.password.message}</p>
+//         )}
+//       </div>
+
+//       <div className={styles.termsBox}>
+//         <p className={styles.policyText}>
+//           People who use our service may have uploaded your contact information
+//           to Instagram.{" "}
+//           <a href="/privacy-policy" target="_blank" className={styles.link}>
+//             Learn More
+//           </a>
+//         </p>
+
+//         <p className={styles.policyText}>
+//           By signing up, you agree to our{" "}
+//           <a href="/terms" target="_blank" className={styles.link}>
+//             Terms
+//           </a>
+//           ,{" "}
+//           <a href="/privacy-policy" target="_blank" className={styles.link}>
+//             Privacy Policy
+//           </a>{" "}
+//           and{" "}
+//           <a href="/cookies-policy" target="_blank" className={styles.link}>
+//             Cookies Policy
+//           </a>
+//           .
+//         </p>
+//       </div>
+
+//       <Button type="submit" text="Sign up" color="primary" />
+//     </form>
+//   );
+// };
+
+// export default SignUpForm;
+
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import TextField from "../../../../layouts/TextField/TextField";
+import Button from "../../../../layouts/Button/Button";
+
+import styles from "../../Authentificate.module.css";
+
+const SignUpForm = ({ submitForm }) => {
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const result = await submitForm(data);
+    setLoading(false);
+
+    if (result.success) {
+      reset();
+      return;
+    }
+
+    if (result.error) {
+      const msg = result.error.toLowerCase();
+      if (msg.includes("email")) {
+        setError("email", { type: "server", message: result.error });
+      } else if (msg.includes("username")) {
+        setError("username", { type: "server", message: result.error });
+      } else {
+        setError("password", { type: "server", message: result.error });
+      }
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <div className={styles.formfields}>
+        <TextField
+          placeholder="Email"
+          type="email"
+          {...register("email", {
+            required: "Enter your email",
+            pattern: {
+              value: /^[\w.-]+@[\w.-]+\.\w+$/,
+              message: "Invalid email address",
+            },
+          })}
+        />
+        {errors.email && (
+          <p className={styles.errorMessage}>{errors.email.message}</p>
+        )}
+
+        <TextField
+          placeholder="Fullname"
+          {...register("fullname", {
+            required: "Enter your name",
+            minLength: { value: 2, message: "Minimum 2 characters" },
+            maxLength: { value: 20, message: "Maximum 20 characters" },
+          })}
+        />
+        {errors.fullname && (
+          <p className={styles.errorMessage}>{errors.fullname.message}</p>
+        )}
+
+        <TextField
+          placeholder="Username"
+          {...register("username", {
+            required: "Enter your username",
+            minLength: { value: 3, message: "Minimum 3 characters" },
+            maxLength: { value: 20, message: "Maximum 20 characters" },
+          })}
+        />
+        {errors.username && (
+          <p className={styles.errorMessage}>{errors.username.message}</p>
+        )}
+
+        <TextField
+          placeholder="Password"
+          type="password"
+          {...register("password", {
+            required: "Enter your password",
+            minLength: { value: 6, message: "Must be at least 6 characters" },
+          })}
+        />
+        {errors.password && (
+          <p className={styles.errorMessage}>{errors.password.message}</p>
+        )}
+      </div>
+
+      <div className={styles.termsBox}>
+        <p className={styles.policyText}>
+          People who use our service may have uploaded your contact information
+          to Instagram.{" "}
+          <a href="/privacy-policy" target="_blank" className={styles.link}>
+            Learn More
+          </a>
+        </p>
+
+        <p className={styles.policyText}>
+          By signing up, you agree to our{" "}
+          <a href="/terms" target="_blank" className={styles.link}>
+            Terms
+          </a>{" "}
+          ,{" "}
+          <a href="/privacy-policy" target="_blank" className={styles.link}>
+            Privacy Policy
+          </a>{" "}
+          and{" "}
+          <a href="/cookies-policy" target="_blank" className={styles.link}>
+            Cookies Policy
+          </a>{" "}
+          .
+        </p>
+      </div>
+
+      <Button type="submit" text="Sign up" color="primary" loading={loading} />
+    </form>
+  );
+};
+
+export default SignUpForm;
