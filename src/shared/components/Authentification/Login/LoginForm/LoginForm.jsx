@@ -39,7 +39,7 @@ const LoginForm = ({ submitForm }) => {
           placeholder="Email or Username"
           type="text"
           {...register("identifier", {
-            required: "Введите email или имя пользователя",
+            required: "Enter your email or username",
           })}
         />
         {errors.identifier && (
@@ -52,7 +52,7 @@ const LoginForm = ({ submitForm }) => {
         <TextField
           placeholder="Password"
           type="password"
-          {...register("password", { required: "Введите пароль" })}
+          {...register("password", { required: "Enter your password" })}
         />
         {errors.password && (
           <p className={styles.errorMessage}>{errors.password.message}</p>
