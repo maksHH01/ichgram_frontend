@@ -1,9 +1,9 @@
-import styles from "./ForgotPasswordPage.module.css";
+import ForgotPassword from "../../../modules/Authentification/ForgotPassword/ForgotPassword";
 
 const ForgotPasswordPage = () => {
   return (
     <>
-      <h1>ForgotPasswordPage</h1>
+      <ForgotPassword />
     </>
   );
 };

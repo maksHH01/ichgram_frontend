@@ -1,9 +1,9 @@
+import styles from "../../Authentificate.module.css";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Button from "../../../../shared/components/Button/Button";
 import TextField from "../../../../shared/components/TextField/TextField";
-import styles from "../../Authentificate.module.css";
 import { Link } from "react-router-dom";
 
 const LoginForm = ({ submitForm }) => {

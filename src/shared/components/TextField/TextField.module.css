@@ -4,9 +4,10 @@
   border: 1px solid #dbdbdb;
   border-radius: 3px;
   background-color: #fafafa;
-  font-size: 12px;
+  font-size: 14px;
   outline: none;
   transition: border-color 0.2s ease-in-out;
+  color: var(--input-text-color);
 }
 
 .input:focus {
