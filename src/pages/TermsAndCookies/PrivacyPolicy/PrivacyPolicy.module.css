@@ -1,0 +1,81 @@
+.pageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: clamp(20px, 8vw, 80px) 20px;
+  background-color: var(--background-color);
+}
+
+.pageSection {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid var(--separator-grey-color);
+  border-radius: 8px;
+  padding: 30px 25px;
+  max-width: 700px;
+  width: 100%;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.pageTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--main-text-color);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pageText {
+  font-size: 14px;
+  color: var(--grey-text-color);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.pageList {
+  margin-left: 20px;
+  margin-bottom: 12px;
+  list-style-type: disc;
+}
+
+.pageListItem {
+  margin-bottom: 6px;
+}
+
+.pageLink {
+  color: var(--button-main-blue);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pageLink:hover {
+  text-decoration: underline;
+  color: var(--dark-blue-text);
+}
+
+.pageButton {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 18px;
+  background-color: var(--button-main-blue);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.pageButton:hover {
+  background-color: var(--dark-blue-text);
+}

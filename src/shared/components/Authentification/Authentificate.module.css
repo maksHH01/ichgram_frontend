@@ -31,6 +31,13 @@
 .card {
   background-color: white;
   border: 1px solid #dbdbdb;
+  padding: 30px 39px 30px 39px;
+  text-align: center;
+}
+
+.cardSignUp {
+  background-color: white;
+  border: 1px solid #dbdbdb;
   padding: 19px 39px 30px 39px;
   text-align: center;
 }

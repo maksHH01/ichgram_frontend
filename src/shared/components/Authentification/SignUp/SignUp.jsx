@@ -7,7 +7,7 @@ const SignUp = () => {
   return (
     <div className={styles.container}>
       <div className={styles.formSection}>
-        <div className={styles.card}>
+        <div className={styles.cardSignUp}>
           <img src={mainLogo} alt="ICHGRAM logo" className={styles.logo} />
           <p className={styles.subtitle}>
             Sign up to see photos and videos from your friends.
