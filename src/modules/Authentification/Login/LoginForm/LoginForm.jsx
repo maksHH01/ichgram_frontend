@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Button from "../../../../shared/components/Button/Button";
 import TextField from "../../../../shared/components/TextField/TextField";
 import styles from "../../Authentificate.module.css";
+import { Link } from "react-router-dom";
 
 const LoginForm = ({ submitForm }) => {
   const {
@@ -70,9 +71,9 @@ const LoginForm = ({ submitForm }) => {
         <div className={styles.separator}></div>
       </div>
 
-      <a className={styles.link} href="/forgot-password">
+      <Link className={styles.link} to="/forgot-password">
         Forgot password?
-      </a>
+      </Link>
     </form>
   );
 };

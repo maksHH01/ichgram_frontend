@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import TextField from "../../../../shared/components/TextField/TextField";
 import Button from "../../../../shared/components/Button/Button";
 
+import { Link } from "react-router-dom";
+
 import styles from "../../Authentificate.module.css";
 
 const SignUpForm = ({ submitForm }) => {
@@ -99,24 +101,24 @@ const SignUpForm = ({ submitForm }) => {
         <p className={styles.policyText}>
           People who use our service may have uploaded your contact information
           to Instagram.{" "}
-          <a href="/privacy-policy" target="_blank" className={styles.link}>
+          <Link to="/privacy-policy" target="_blank" className={styles.link}>
             Learn More
-          </a>
+          </Link>
         </p>
 
         <p className={styles.policyText}>
           By signing up, you agree to our{" "}
-          <a href="/terms" target="_blank" className={styles.link}>
+          <Link to="/terms" target="_blank" className={styles.link}>
             Terms
-          </a>{" "}
+          </Link>{" "}
           ,{" "}
-          <a href="/privacy-policy" target="_blank" className={styles.link}>
+          <Link to="/privacy-policy" target="_blank" className={styles.link}>
             Privacy Policy
-          </a>{" "}
+          </Link>{" "}
           and{" "}
-          <a href="/cookies-policy" target="_blank" className={styles.link}>
+          <Link to="/cookies-policy" target="_blank" className={styles.link}>
             Cookies Policy
-          </a>{" "}
+          </Link>{" "}
           .
         </p>
       </div>

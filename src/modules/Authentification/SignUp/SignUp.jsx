@@ -3,6 +3,8 @@ import styles from "../Authentificate.module.css";
 import mainLogo from "../../../assets/svg/main-logo.svg";
 import SignUpForm from "./SignUpForm/SignUpForm";
 
+import { Link } from "react-router-dom";
+
 const SignUp = () => {
   return (
     <div className={styles.container}>
@@ -18,9 +20,9 @@ const SignUp = () => {
         <div className={styles.signupCard}>
           <p>
             Have an account?{" "}
-            <a href="/" className={styles.signupText}>
+            <Link to="/" className={styles.signupText}>
               Log in
-            </a>
+            </Link>
           </p>
         </div>
       </div>
