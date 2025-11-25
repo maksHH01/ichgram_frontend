@@ -36,7 +36,7 @@ const Login = () => {
         <div className={styles.signupCard}>
           <p>
             Don’t have an account?{" "}
-            <Link href="/signup" className={styles.signupText}>
+            <Link to="/signup" className={styles.signupText}>
               Sign up
             </Link>
           </p>
