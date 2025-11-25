@@ -1,6 +1,7 @@
 import styles from "./PrivacyPolicy.module.css";
 
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
@@ -27,9 +28,9 @@ const PrivacyPolicy = () => {
 
           <p className={styles.pageText}>
             For more details, see our{" "}
-            <a href="/terms" className={styles.pageLink}>
+            <Link to="/terms" className={styles.pageLink}>
               Terms of Service
-            </a>
+            </Link>
             .
           </p>
 

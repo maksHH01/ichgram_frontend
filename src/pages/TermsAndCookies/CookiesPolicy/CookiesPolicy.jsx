@@ -1,6 +1,7 @@
 import styles from "./CookiesPolicy.module.css";
 
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CookiesPolicy = () => {
   const navigate = useNavigate();
@@ -26,9 +27,9 @@ const CookiesPolicy = () => {
 
           <p className={styles.pageText}>
             Read our{" "}
-            <a href="/privacy-policy" className={styles.pageLink}>
+            <Link to="/privacy-policy" className={styles.pageLink}>
               Privacy Policy
-            </a>{" "}
+            </Link>{" "}
             for more details.
           </p>
 

@@ -1,6 +1,7 @@
 import styles from "./TermsOfService.module.css";
 
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const TermsOfService = () => {
   const navigate = useNavigate();
@@ -29,9 +30,9 @@ const TermsOfService = () => {
 
           <p className={styles.pageText}>
             Learn more about our{" "}
-            <a href="/privacy-policy" className={styles.pageLink}>
+            <Link to="/privacy-policy" className={styles.pageLink}>
               Privacy Policy
-            </a>
+            </Link>
             .
           </p>
 
