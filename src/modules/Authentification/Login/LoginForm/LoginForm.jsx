@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Button from "../../../../layouts/Button/Button";
-import TextField from "../../../../layouts/TextField/TextField";
+import Button from "../../../../shared/components/Button/Button";
+import TextField from "../../../../shared/components/TextField/TextField";
 import styles from "../../Authentificate.module.css";
 
 const LoginForm = ({ submitForm }) => {

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "../Authentificate.module.css";
-import previewImage from "../../../../assets/images/preview-image.png";
-import logo from "../../../../assets/svg/main-logo.svg";
+import previewImage from "../../../assets/images/preview-image.png";
+import logo from "../../../assets/svg/main-logo.svg";
 
 import LoginForm from "./LoginForm/LoginForm";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -35,9 +36,9 @@ const Login = () => {
         <div className={styles.signupCard}>
           <p>
             Don’t have an account?{" "}
-            <a href="/signup" className={styles.signupText}>
+            <Link href="/signup" className={styles.signupText}>
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

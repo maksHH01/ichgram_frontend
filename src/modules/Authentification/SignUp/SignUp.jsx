@@ -1,6 +1,6 @@
 import styles from "../Authentificate.module.css";
 
-import mainLogo from "../../../../assets/svg/main-logo.svg";
+import mainLogo from "../../../assets/svg/main-logo.svg";
 import SignUpForm from "./SignUpForm/SignUpForm";
 
 const SignUp = () => {
