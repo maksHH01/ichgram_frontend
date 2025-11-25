@@ -4,7 +4,7 @@
   align-items: center;
   min-height: 100vh;
   border-radius: 1px;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
 }
 
 .imageSection {
@@ -18,7 +18,16 @@
   object-fit: contain;
 }
 
-.formSection,
+.formSection {
+  flex: 1;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
 .formSectionForgotPass {
   flex: 1;
   max-width: 350px;
@@ -27,19 +36,24 @@
   gap: 10px;
   position: relative;
   width: 100%;
-  min-width: 390px;
+  max-width: 390px;
 }
 
 .formSectionForgotPass {
   gap: 0px;
 }
 
-.card,
+.card {
+  background-color: white;
+  border: 1px solid #dbdbdb;
+  padding: 30px 40px 23px 40px;
+  text-align: center;
+  width: 100%;
+}
 .cardForgotPass {
   background-color: white;
   border: 1px solid #dbdbdb;
-  padding: clamp(25px, 5vw, 45px) clamp(45px, 10vw, 45px) clamp(50px, 8vw, 84px)
-    clamp(45px, 10vw, 45px);
+  padding: 26px 45px 80px 45px;
   text-align: center;
   width: 100%;
 }

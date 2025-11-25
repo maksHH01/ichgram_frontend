@@ -16,7 +16,7 @@
 }
 
 .primary:hover {
-  background-color: var(--dark-blue-text);
+  background-color: var(--grey-text-hover);
 }
 
 .primary:disabled {
