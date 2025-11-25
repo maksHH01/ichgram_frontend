@@ -101,22 +101,22 @@ const SignUpForm = ({ submitForm }) => {
         <p className={styles.policyText}>
           People who use our service may have uploaded your contact information
           to Instagram.{" "}
-          <Link to="/privacy-policy" target="_blank" className={styles.link}>
+          <Link to="/privacy-policy" className={styles.link}>
             Learn More
           </Link>
         </p>
 
         <p className={styles.policyText}>
           By signing up, you agree to our{" "}
-          <Link to="/terms" target="_blank" className={styles.link}>
+          <Link to="/terms" className={styles.link}>
             Terms
           </Link>{" "}
           ,{" "}
-          <Link to="/privacy-policy" target="_blank" className={styles.link}>
+          <Link to="/privacy-policy" className={styles.link}>
             Privacy Policy
           </Link>{" "}
           and{" "}
-          <Link to="/cookies-policy" target="_blank" className={styles.link}>
+          <Link to="/cookies-policy" className={styles.link}>
             Cookies Policy
           </Link>{" "}
           .
