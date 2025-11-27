@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.notFoundContainer {
+  display: flex;
+  gap: 44px;
+}
+
+.notFoundText {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notFoundTitle {
+  font-weight: bold;
+  font-size: 36px;
+}
+
+.notFoundParagraph {
+  width: 60%;
+  color: var(--grey-text-color);
+  font-size: var(--bigger-font-size);
+  font-weight: 600;
+}

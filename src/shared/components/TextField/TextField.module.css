@@ -7,7 +7,12 @@
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s ease-in-out;
+  color: var(--grey-text-hover);
+}
+
+.input::placeholder {
   color: var(--input-text-color);
+  opacity: 2;
 }
 
 .input:focus {

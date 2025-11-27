@@ -11,6 +11,10 @@ import TermsOfService from "./TermsAndCookies/TermsOfService/TermsOfService.jsx"
 import PrivacyPolicy from "./TermsAndCookies/PrivacyPolicy/PrivacyPolicy.jsx";
 import CookiesPolicy from "./TermsAndCookies/CookiesPolicy/CookiesPolicy.jsx";
 
+import MainPage from "./MainPage/MainPage.jsx";
+
+import NotFoundPage from "./NotFound/NotFoundPage.jsx";
+
 const Navigation = () => {
   return (
     <>
@@ -28,6 +32,10 @@ const Navigation = () => {
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/cookies-policy" element={<CookiesPolicy />} />
+
+        <Route path="/dashboard" element={<MainPage />} />
+
+        <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
