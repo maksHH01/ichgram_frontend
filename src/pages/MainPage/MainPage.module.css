@@ -1,0 +1,8 @@
+.postsBox {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 404px));
+  gap: 39px;
+  justify-content: start;
+  width: max-content;
+  /* margin: 0 auto; */
+}

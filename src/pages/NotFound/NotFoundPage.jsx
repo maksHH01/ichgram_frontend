@@ -1,6 +1,9 @@
 import styles from "./NotFoundPage.module.css";
 import previewImage from "../../assets/images/preview-image.png";
 
+import Footer from "../../shared/components/Footer/Footer";
+import Sidebar from "../../shared/components/SidebarMenu/SidebarMenu";
+
 const NotFoundPage = () => {
   return (
     <>

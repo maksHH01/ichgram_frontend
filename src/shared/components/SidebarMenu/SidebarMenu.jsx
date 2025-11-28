@@ -18,10 +18,10 @@ import createLogo from "../../../assets/svg/icon-create.svg";
 import noProfilePic from "../../../assets/images/no-profile-pic.jpg";
 
 const Sidebar = ({
-  onToggleNotifications,
-  onToggleSearch,
-  onClosePanels,
-  activePanel,
+  onToggleNotifications = () => {},
+  onToggleSearch = () => {},
+  onClosePanels = () => {},
+  activePanel = null,
 }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const navigate = useNavigate();
@@ -134,25 +134,24 @@ const Sidebar = ({
               onMouseLeave={() => setHoveredItem(null)}
               onClick={(e) => handleClick(item, e)}
             >
-              {typeof imgOrIcon === "string" ? (
-                <img
-                  src={imgOrIcon}
-                  alt={item.label}
-                  className={item.isAvatar ? styles.avatarIcon : styles.icon}
-                />
-              ) : (
-                imgOrIcon
-              )}
-
+              <img
+                src={imgOrIcon}
+                alt={item.label}
+                className={item.isAvatar ? styles.avatarIcon : styles.icon}
+              />
               <span>{item.label}</span>
             </Link>
           );
         })}
       </nav>
 
-      {/* <div className={styles.logoutWrapper}>
-        <Button text="Log out" color="danger" onClick={() => navigate("/")} />
-      </div> */}
+      <div className={styles.logoutWrapper}>
+        <Button
+          text="Log out"
+          color="secondary"
+          onClick={() => navigate("/")}
+        />
+      </div>
     </div>
   );
 };
