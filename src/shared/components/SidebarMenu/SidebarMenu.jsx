@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 import Button from "../Button/Button";
 import NotificationsPanel from "../NotificationPanel/NotificationPanel";
+import Search from "../Search/Search";
+
 import styles from "./SidebarMenu.module.css";
 
+// Icons / images
 import mainLogo from "../../../assets/svg/main-logo.svg";
 import homeLogo from "../../../assets/svg/icon-home.svg";
 import homeLogoFilled from "../../../assets/svg/icon-home-filled.svg";
@@ -20,10 +24,11 @@ import noProfilePic from "../../../assets/images/no-profile-pic.jpg";
 
 const Sidebar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
+
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const menuItems = [
     {
@@ -32,7 +37,11 @@ const Sidebar = () => {
       iconFilled: homeLogoFilled,
       path: "/dashboard",
     },
-    { label: "Search", icon: searchLogo, iconFilled: searchLogoFilled },
+    {
+      label: "Search",
+      icon: searchLogo,
+      iconFilled: searchLogoFilled,
+    },
     {
       label: "Explore",
       icon: exploreLogo,
@@ -50,31 +59,51 @@ const Sidebar = () => {
       icon: notificateIcon,
       iconFilled: notificateIconFilled,
     },
-    { label: "Create", icon: createLogo, iconFilled: createLogo },
+    {
+      label: "Create",
+      icon: createLogo,
+      iconFilled: createLogo,
+      path: "/create-new-post",
+    },
     {
       label: "Profile",
       icon: noProfilePic,
       iconFilled: noProfilePic,
       isAvatar: true,
+      path: "/profile",
     },
   ];
 
   const handleClick = (item, e) => {
     e.preventDefault();
+
     switch (item.label) {
       case "Home":
         navigate("/dashboard");
         break;
+
       case "Explore":
         navigate("/explore");
         break;
+
       case "Profile":
         navigate("/profile");
         break;
+
+      case "Create":
+        navigate("/create-new-post");
+        break;
+
+      case "Search":
+        setIsSearchOpen(true);
+        break;
+
       case "Notifications":
         setIsNotificationsOpen((prev) => !prev);
         break;
+
       default:
+        if (item.path) navigate(item.path);
         break;
     }
   };
@@ -106,13 +135,22 @@ const Sidebar = () => {
   return (
     <>
       <div className={styles.sidebar}>
+        {/* Logo */}
         <div className={styles.logoWrapper}>
-          <img src={mainLogo} alt="ICHGRAM Logo" className={styles.logo} />
+          <img
+            src={mainLogo}
+            alt="ICHGRAM Logo"
+            className={styles.logo}
+            onClick={() => navigate("/dashboard")}
+          />
         </div>
+
+        {/* Navigation */}
         <nav className={styles.nav}>
           {menuItems.map((item) => {
             const isHovered = hoveredItem === item.label;
-            const imgOrIcon = isHovered ? item.iconFilled : item.icon;
+            const iconToShow = isHovered ? item.iconFilled : item.icon;
+
             return (
               <Link
                 to="#"
@@ -123,7 +161,7 @@ const Sidebar = () => {
                 onClick={(e) => handleClick(item, e)}
               >
                 <img
-                  src={item.isAvatar ? noProfilePic : imgOrIcon}
+                  src={item.isAvatar ? noProfilePic : iconToShow}
                   alt={item.label}
                   className={item.isAvatar ? styles.avatarIcon : styles.icon}
                 />
@@ -132,6 +170,8 @@ const Sidebar = () => {
             );
           })}
         </nav>
+
+        {/* Log out */}
         <div className={styles.logoutWrapper}>
           <Button
             text="Log out"
@@ -141,11 +181,15 @@ const Sidebar = () => {
         </div>
       </div>
 
+      {/* Notifications Panel */}
       <NotificationsPanel
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}
         notifications={mockNotifications}
       />
+
+      {/* Search Panel */}
+      <Search isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 };

@@ -9,7 +9,7 @@ import styles from "./MainLayout.module.css";
 const MainLayout = () => {
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.containerLayout}>
         <Sidebar />
         <main className={styles.mainContent}>
           <Outlet />
