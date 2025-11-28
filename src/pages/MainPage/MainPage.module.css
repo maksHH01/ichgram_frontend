@@ -1,8 +1,14 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .postsBox {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 404px));
   gap: 39px;
   justify-content: start;
   width: max-content;
-  /* margin: 0 auto; */
+  padding: 55px 75px 0px 75px;
 }

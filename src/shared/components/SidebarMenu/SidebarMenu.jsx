@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Button from "../Button/Button";
+import NotificationsPanel from "../NotificationPanel/NotificationPanel";
 import styles from "./SidebarMenu.module.css";
 
 import mainLogo from "../../../assets/svg/main-logo.svg";
@@ -17,13 +18,10 @@ import notificateIconFilled from "../../../assets/svg/icon-notification-filled.s
 import createLogo from "../../../assets/svg/icon-create.svg";
 import noProfilePic from "../../../assets/images/no-profile-pic.jpg";
 
-const Sidebar = ({
-  onToggleNotifications = () => {},
-  onToggleSearch = () => {},
-  onClosePanels = () => {},
-  activePanel = null,
-}) => {
+const Sidebar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,12 +32,7 @@ const Sidebar = ({
       iconFilled: homeLogoFilled,
       path: "/dashboard",
     },
-    {
-      label: "Search",
-      icon: searchLogo,
-      iconFilled: searchLogoFilled,
-      panel: "search",
-    },
+    { label: "Search", icon: searchLogo, iconFilled: searchLogoFilled },
     {
       label: "Explore",
       icon: exploreLogo,
@@ -56,14 +49,8 @@ const Sidebar = ({
       label: "Notifications",
       icon: notificateIcon,
       iconFilled: notificateIconFilled,
-      panel: "notifications",
     },
-    {
-      label: "Create",
-      icon: createLogo,
-      iconFilled: createLogo,
-      panel: "create",
-    },
+    { label: "Create", icon: createLogo, iconFilled: createLogo },
     {
       label: "Profile",
       icon: noProfilePic,
@@ -72,87 +59,94 @@ const Sidebar = ({
     },
   ];
 
-  const handleClick = (item, event) => {
-    event.preventDefault();
+  const handleClick = (item, e) => {
+    e.preventDefault();
     switch (item.label) {
       case "Home":
         navigate("/dashboard");
-        onClosePanels();
         break;
       case "Explore":
         navigate("/explore");
-        onClosePanels();
         break;
       case "Profile":
         navigate("/profile");
-        onClosePanels();
-        break;
-      case "Search":
-        onToggleSearch();
         break;
       case "Notifications":
-        onToggleNotifications();
-        break;
-      case "Messages":
-        navigate("/messages");
-        break;
-      case "Create":
-        navigate("/create-new-post", { state: { background: location } });
+        setIsNotificationsOpen((prev) => !prev);
         break;
       default:
         break;
     }
   };
 
+  const mockNotifications = [
+    {
+      id: "1",
+      sender: { username: "Alice", avatarUrl: noProfilePic },
+      type: "like",
+      post: { imageUrl: noProfilePic },
+      createdAt: "2h ago",
+    },
+    {
+      id: "2",
+      sender: { username: "Bob", avatarUrl: noProfilePic },
+      type: "comment",
+      post: { imageUrl: noProfilePic },
+      createdAt: "3h ago",
+    },
+    {
+      id: "3",
+      sender: { username: "Charlie", avatarUrl: noProfilePic },
+      type: "follow",
+      post: null,
+      createdAt: "5h ago",
+    },
+  ];
+
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.logoWrapper}>
-        <img
-          src={mainLogo}
-          alt="ICHGRAM Logo"
-          className={styles.logo}
-          onClick={() => navigate("/dashboard")}
-        />
+    <>
+      <div className={styles.sidebar}>
+        <div className={styles.logoWrapper}>
+          <img src={mainLogo} alt="ICHGRAM Logo" className={styles.logo} />
+        </div>
+        <nav className={styles.nav}>
+          {menuItems.map((item) => {
+            const isHovered = hoveredItem === item.label;
+            const imgOrIcon = isHovered ? item.iconFilled : item.icon;
+            return (
+              <Link
+                to="#"
+                key={item.label}
+                className={styles.navItem}
+                onMouseEnter={() => setHoveredItem(item.label)}
+                onMouseLeave={() => setHoveredItem(null)}
+                onClick={(e) => handleClick(item, e)}
+              >
+                <img
+                  src={item.isAvatar ? noProfilePic : imgOrIcon}
+                  alt={item.label}
+                  className={item.isAvatar ? styles.avatarIcon : styles.icon}
+                />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+        <div className={styles.logoutWrapper}>
+          <Button
+            text="Log out"
+            color="secondary"
+            onClick={() => navigate("/")}
+          />
+        </div>
       </div>
 
-      <nav className={styles.nav}>
-        {menuItems.map((item) => {
-          const isRouteActive =
-            item.path && location.pathname.startsWith(item.path);
-          const isPanelActive = item.panel && activePanel === item.panel;
-          const isActive = isRouteActive || isPanelActive;
-          const isHovered = hoveredItem === item.label;
-
-          const imgOrIcon = isActive || isHovered ? item.iconFilled : item.icon;
-
-          return (
-            <Link
-              to="#"
-              key={item.label}
-              className={`${styles.navItem} ${isActive ? styles.active : ""}`}
-              onMouseEnter={() => setHoveredItem(item.label)}
-              onMouseLeave={() => setHoveredItem(null)}
-              onClick={(e) => handleClick(item, e)}
-            >
-              <img
-                src={imgOrIcon}
-                alt={item.label}
-                className={item.isAvatar ? styles.avatarIcon : styles.icon}
-              />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className={styles.logoutWrapper}>
-        <Button
-          text="Log out"
-          color="secondary"
-          onClick={() => navigate("/")}
-        />
-      </div>
-    </div>
+      <NotificationsPanel
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
+        notifications={mockNotifications}
+      />
+    </>
   );
 };
 

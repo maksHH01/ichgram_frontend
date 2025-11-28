@@ -53,7 +53,7 @@ const MainPage = () => {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.postsBox}>
         {posts.map((post) => (
           <PostComponent
@@ -64,7 +64,7 @@ const MainPage = () => {
         ))}
       </div>
       <PostsFinished />
-    </>
+    </div>
   );
 };
 

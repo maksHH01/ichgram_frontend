@@ -5,7 +5,8 @@
 
 .mainContent {
   flex: 1;
-  padding: 55px 75px 40px 75px;
   display: flex;
+  justify-content: center;
+  align-items: start;
   flex-direction: column;
 }
