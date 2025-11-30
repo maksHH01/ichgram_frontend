@@ -53,10 +53,9 @@ const Navigation = () => {
             path="/users/:username/edit-my-profile"
             element={<EditProfilePage />}
           />
+          <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Route>
-
-      <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );
 };

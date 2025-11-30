@@ -7,7 +7,6 @@ import Search from "../Search/Search";
 
 import styles from "./SidebarMenu.module.css";
 
-// Icons / images
 import mainLogo from "../../../assets/svg/main-logo.svg";
 import homeLogo from "../../../assets/svg/icon-home.svg";
 import homeLogoFilled from "../../../assets/svg/icon-home-filled.svg";
@@ -24,7 +23,6 @@ import noProfilePic from "../../../assets/images/no-profile-pic.jpg";
 
 const Sidebar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
-
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -37,11 +35,7 @@ const Sidebar = () => {
       iconFilled: homeLogoFilled,
       path: "/dashboard",
     },
-    {
-      label: "Search",
-      icon: searchLogo,
-      iconFilled: searchLogoFilled,
-    },
+    { label: "Search", icon: searchLogo, iconFilled: searchLogoFilled },
     {
       label: "Explore",
       icon: exploreLogo,
@@ -78,22 +72,6 @@ const Sidebar = () => {
     e.preventDefault();
 
     switch (item.label) {
-      case "Home":
-        navigate("/dashboard");
-        break;
-
-      case "Explore":
-        navigate("/explore");
-        break;
-
-      case "Profile":
-        navigate("/profile");
-        break;
-
-      case "Create":
-        navigate("/create-new-post");
-        break;
-
       case "Search":
         setIsSearchOpen(true);
         break;
@@ -135,7 +113,6 @@ const Sidebar = () => {
   return (
     <>
       <div className={styles.sidebar}>
-        {/* Logo */}
         <div className={styles.logoWrapper}>
           <img
             src={mainLogo}
@@ -145,7 +122,6 @@ const Sidebar = () => {
           />
         </div>
 
-        {/* Navigation */}
         <nav className={styles.nav}>
           {menuItems.map((item) => {
             const isHovered = hoveredItem === item.label;
@@ -171,7 +147,6 @@ const Sidebar = () => {
           })}
         </nav>
 
-        {/* Log out */}
         <div className={styles.logoutWrapper}>
           <Button
             text="Log out"
@@ -181,14 +156,12 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Notifications Panel */}
       <NotificationsPanel
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}
         notifications={mockNotifications}
       />
 
-      {/* Search Panel */}
       <Search isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );

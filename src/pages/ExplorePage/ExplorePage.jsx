@@ -1,5 +1,11 @@
+import Explore from "../../modules/Explore/Explore";
+
 const ExplorePage = () => {
-  return <></>;
+  return (
+    <>
+      <Explore />
+    </>
+  );
 };
 
 export default ExplorePage;
