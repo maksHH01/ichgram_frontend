@@ -15,6 +15,7 @@ import PrivacyPolicy from "./TermsAndCookies/PrivacyPolicy/PrivacyPolicy";
 import CookiesPolicy from "./TermsAndCookies/CookiesPolicy/CookiesPolicy";
 
 import MainLayout from "../layouts/MainLayout/MainLayout";
+import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
 
 import MainPage from "./MainPage/MainPage";
 import ExplorePage from "./ExplorePage/ExplorePage";
@@ -48,12 +49,15 @@ const Navigation = () => {
           <Route path="/dashboard" element={<MainPage />} />
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/messages" element={<MessagesPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
+        </Route>
+
+        <Route element={<ProfileLayout />}>
           <Route path="/users/:username" element={<ProfilePage />} />
           <Route
             path="/users/:username/edit-my-profile"
             element={<EditProfilePage />}
           />
-          <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Route>
     </Routes>

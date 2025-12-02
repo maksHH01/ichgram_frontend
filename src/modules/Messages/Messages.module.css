@@ -40,8 +40,8 @@
 }
 
 .avatarSm {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -76,17 +76,17 @@
 }
 
 .chatHeader {
-  height: 56px;
+  height: 60px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 20px;
+  padding: 10px 20px;
   border-bottom: 1px solid #e6e6e6;
 }
 
 .headerAvatar {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -107,15 +107,15 @@
 }
 
 .heroAvatar {
-  width: 88px;
-  height: 88px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .heroName {
   margin-top: 6px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   color: #111;
 }
@@ -182,7 +182,7 @@
   padding: 12px 14px;
   border-radius: 14px;
   line-height: 1.4;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .left {

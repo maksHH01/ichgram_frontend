@@ -28,6 +28,11 @@ const Sidebar = () => {
 
   const navigate = useNavigate();
 
+  const currentUser = {
+    username: "john_doe",
+    avatarUrl: noProfilePic,
+  };
+
   const menuItems = [
     {
       label: "Home",
@@ -61,25 +66,25 @@ const Sidebar = () => {
     },
     {
       label: "Profile",
-      icon: noProfilePic,
-      iconFilled: noProfilePic,
+      icon: currentUser.avatarUrl,
+      iconFilled: currentUser.avatarUrl,
       isAvatar: true,
-      path: "/profile",
+      path: `/users/${currentUser.username}`,
     },
   ];
 
   const handleClick = (item, e) => {
     e.preventDefault();
+    setIsSearchOpen(false);
+    setIsNotificationsOpen(false);
 
     switch (item.label) {
       case "Search":
         setIsSearchOpen(true);
         break;
-
       case "Notifications":
-        setIsNotificationsOpen((prev) => !prev);
+        setIsNotificationsOpen(true);
         break;
-
       default:
         if (item.path) navigate(item.path);
         break;
@@ -137,7 +142,7 @@ const Sidebar = () => {
                 onClick={(e) => handleClick(item, e)}
               >
                 <img
-                  src={item.isAvatar ? noProfilePic : iconToShow}
+                  src={item.isAvatar ? currentUser.avatarUrl : iconToShow}
                   alt={item.label}
                   className={item.isAvatar ? styles.avatarIcon : styles.icon}
                 />

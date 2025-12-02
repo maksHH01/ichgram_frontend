@@ -1,0 +1,22 @@
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 307px));
+  gap: 8px;
+  width: 100%;
+}
+
+.postItem {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #eee;
+  cursor: pointer;
+  max-width: 307px;
+  max-height: 307px;
+}
+
+.postItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
