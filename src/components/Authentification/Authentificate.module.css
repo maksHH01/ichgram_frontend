@@ -55,6 +55,12 @@
   /* margin-top: 20px; */
 }
 
+.formForgotPass {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
 .formfields {
   display: flex;
   flex-direction: column;
