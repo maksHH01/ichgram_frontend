@@ -1,0 +1,18 @@
+.bioText {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #222;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.toggleButton {
+    background: none;
+    border: none;
+    color: var(--grey-text);
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    display: inline;
+    font-family: inherit;
+}

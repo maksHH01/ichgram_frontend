@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useState } from "react";
+import type { RootState } from "../../redux/store";
+import type { User } from "../../types/User";
 import {
   followUser,
   unfollowUser,
@@ -8,10 +10,13 @@ import {
 import { getCurrentUserApi } from "../api/auth-api";
 import { updateCurrentUser } from "../../redux/auth/auth-slice";
 
-export const useFollow = (user, setUser) => {
+export const useFollow = (
+  user: User | null,
+  setUser?: (user: User) => void
+) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth.user);
-  const token = useSelector((state) => state.auth.token);
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const token = useSelector((state: RootState) => state.auth.token);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const isFollowing = user ? currentUser?.following?.includes(user._id) : false;

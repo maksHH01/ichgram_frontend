@@ -1,41 +1,5 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-  background-color: var(--white-background);
-  font-size: var(--main-font-size);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-ul,
-ol {
-  list-style: none;
-}
-
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font: inherit;
-}
-
-input,
-textarea,
-select {
-  font: inherit;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }

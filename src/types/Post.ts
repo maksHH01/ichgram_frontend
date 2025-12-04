@@ -1,5 +1,5 @@
 import type { User } from "./User";
-import type { Comment } from "./Comments";
+import type { Comment } from "./Comment";
 
 export interface Post {
   _id: string;
