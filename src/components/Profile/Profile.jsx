@@ -116,9 +116,9 @@ const Profile = () => {
 
           <div className={styles.bio}>
             <strong>{user.fullname}</strong>
-            <BioWithToggle text={user.bio} />
+            <BioWithToggle text={user.bio} maxChars={80} />
             {user.link && (
-              <Link to={user.link} target="_blank" rel="noopener noreferrer">
+              <Link to={user.link} rel="noopener noreferrer">
                 {user.link}
               </Link>
             )}

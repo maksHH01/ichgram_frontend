@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./Messages.module.css";
 
+import noPhoto from "../../../public/no-photo.png";
+
 const Messages = () => {
   return (
     <div className={styles.messagesPage}>
@@ -11,12 +13,12 @@ const Messages = () => {
           <img
             className={styles.avatarSm}
             src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
-            alt="Mary"
+            alt="userMessageAvatar"
           />
           <div className={styles.chatInfo}>
-            <div className={styles.chatName}>Mary</div>
+            <div className={styles.chatName}>Alex</div>
             <div className={styles.chatLast}>
-              Mary sent a message • 2 weeks ago
+              Alex sent a message • 2 weeks ago
             </div>
           </div>
         </div>
@@ -25,12 +27,12 @@ const Messages = () => {
           <img
             className={styles.avatarSm}
             src="/moc/toa-heftiba-DMxHZhWw-nM-unsplash.jpg"
-            alt="Sashaa"
+            alt="John"
           />
           <div className={styles.chatInfo}>
-            <div className={styles.chatName}>Sashaa</div>
+            <div className={styles.chatName}>John</div>
             <div className={styles.chatLast}>
-              Sashaa sent a message • 2 weeks ago
+              John sent a message • 2 weeks ago
             </div>
           </div>
         </div>
@@ -41,19 +43,19 @@ const Messages = () => {
           <img
             className={styles.headerAvatar}
             src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
-            alt="Mary"
+            alt="Alex avatar"
           />
-          <div className={styles.headerTitle}>Mary</div>
+          <div className={styles.headerTitle}>Alex</div>
         </div>
 
         <div className={styles.userHero}>
           <img
             className={styles.heroAvatar}
             src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
-            alt="Mary"
+            alt="Alex avatar"
           />
-          <div className={styles.heroName}>Mary</div>
-          <div className={styles.heroSub}>mary • ICHgram</div>
+          <div className={styles.heroName}>Alex</div>
+          <div className={styles.heroSub}>alex • ICHgram</div>
           <button className={styles.viewProfile}>View Profile</button>
         </div>
 
@@ -64,7 +66,7 @@ const Messages = () => {
             <img
               className={styles.msgAvatar}
               src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
-              alt="Mary"
+              alt="Alex"
             />
             <div className={`${styles.message} ${styles.left}`}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
@@ -77,6 +79,11 @@ const Messages = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </div>
+            <img
+              className={styles.msgAvatar}
+              src="no-profile-pic-icon-11.jpg"
+              alt="myAvatar"
+            />
           </div>
         </div>
 

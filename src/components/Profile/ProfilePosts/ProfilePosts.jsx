@@ -6,7 +6,7 @@ export default function ProfilePosts({ posts }) {
   const location = useLocation();
 
   if (!posts.length) {
-    return <p>This user has no posts yet</p>;
+    return <p className={styles.noPosts}>This profile has no posts yet</p>;
   }
 
   return (

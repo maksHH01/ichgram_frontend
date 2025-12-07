@@ -29,6 +29,20 @@ const Sidebar = ({
     navigate("/");
   };
 
+  // 🔥 Универсальная функция
+  const togglePanel = (panel) => {
+    if (activePanel === panel) {
+      onClosePanels();
+    } else {
+      onClosePanels();
+      if (panel === "search") onToggleSearch();
+      if (panel === "notifications") onToggleNotifications();
+      if (panel === "create") {
+        navigate("/create-new-post", { state: { background: location } });
+      }
+    }
+  };
+
   const menuItems = [
     {
       label: "Home",
@@ -55,9 +69,9 @@ const Sidebar = ({
       path: "/messages",
     },
     {
-      label: "Notification",
+      label: "Notifications",
       icon: "/sidebar/icon-notification.svg",
-      iconFilled: "/sidebar/icon-notification-filled.svg",
+      iconFilled: "/heart-fill.svg",
       panel: "notifications",
     },
     {
@@ -77,39 +91,38 @@ const Sidebar = ({
 
   const handleClick = (item, e) => {
     e.preventDefault();
-    switch (item.label) {
-      case "Home":
-        navigate("/dashboard");
-        onClosePanels();
-        break;
-      case "Explore":
-        navigate("/explore");
-        onClosePanels();
-        break;
-      case "Profile":
-        if (!currentUser) return;
-        navigate(`/users/${currentUser.username}`);
-        onClosePanels();
-        break;
-      case "Search":
-        onToggleSearch();
-        break;
-      case "Notification":
-        onToggleNotifications();
-        break;
-      case "Messages":
-        navigate("/messages");
-        break;
-      case "Create":
-        navigate("/create-new-post", { state: { background: location } });
-        break;
+
+    if (item.path) {
+      navigate(item.path);
+      onClosePanels();
+      return;
+    }
+
+    if (item.panel) {
+      togglePanel(item.panel);
+      return;
+    }
+
+    if (item.label === "Profile") {
+      if (!currentUser) return;
+      navigate(`/users/${currentUser.username}`);
+      onClosePanels();
+      return;
+    }
+
+    if (item.label === "Messages") {
+      navigate("/messages");
+      onClosePanels();
+      return;
     }
   };
 
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoWrapper}>
-        <img src="/logo.svg" alt="ICHGRAM" className={styles.logo} />
+        <Link to="/dashboard">
+          <img src="/logo.svg" alt="ICHGRAM" className={styles.logo} />
+        </Link>
       </div>
 
       <nav className={styles.nav}>
@@ -149,7 +162,7 @@ const Sidebar = ({
       </nav>
 
       <div className={styles.logoutWrapper}>
-        <Button text="Log out" color="danger" onClick={handleLogout} />
+        <Button text="Log out" color="secondary" onClick={handleLogout} />
       </div>
     </aside>
   );

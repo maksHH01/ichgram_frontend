@@ -5,7 +5,7 @@ import { getNotifications } from "../../shared/api/notifications-api";
 import { getDateLabel } from "../SinglePost/SinglePost";
 import { useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
-import * as jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const API_ORIGIN = import.meta.env.VITE_API_URL.replace("/api", "");
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:4000";

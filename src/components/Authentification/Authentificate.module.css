@@ -168,3 +168,9 @@
 .btn {
   margin-bottom: 55px;
 }
+
+.errorMessage {
+  color: var(--error-message-color);
+  text-align: start;
+  font-size: 12px;
+}

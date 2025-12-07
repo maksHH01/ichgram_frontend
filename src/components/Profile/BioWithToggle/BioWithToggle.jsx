@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styles from "./BioWithToggle.module.css";
 
-const clampLength = 130;
-
-const BioWithToggle = ({ text }) => {
+const BioWithToggle = ({ text, maxChars = 130 }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!text) return null;
@@ -15,9 +13,10 @@ const BioWithToggle = ({ text }) => {
     const clampedLines = [];
 
     for (const line of lines) {
-      if (charCount >= clampLength) break;
+      if (charCount >= maxChars) break;
 
-      const remaining = clampLength - charCount;
+      const remaining = maxChars - charCount;
+
       if (line.length <= remaining) {
         clampedLines.push(line);
         charCount += line.length;

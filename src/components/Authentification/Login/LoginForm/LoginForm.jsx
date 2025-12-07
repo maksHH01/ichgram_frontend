@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
@@ -6,11 +6,8 @@ import { Link } from "react-router-dom";
 
 import TextField from "../../../../layouts/TextField/TextField";
 import Button from "../../../../layouts/Button/Button";
-
 import loginSchema from "./loginSchema";
 import { selectAuth } from "../../../../redux/auth/auth-selectors";
-
-import useFieldValidation from "../../../../shared/hooks/useFieldValidation";
 
 import styles from "../../Authentificate.module.css";
 
@@ -21,19 +18,14 @@ const LoginForm = ({ submitForm }) => {
     register,
     handleSubmit,
     reset,
-    control,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  useFieldValidation({ control, setError: () => {}, clearErrors: () => {} });
-
-  const [serverError, setServerError] = useState(null);
-
   const onSubmit = async (data) => {
-    setServerError(null);
     const result = await submitForm(data);
 
     if (result.success) {
@@ -42,8 +34,7 @@ const LoginForm = ({ submitForm }) => {
       const field = result.error.toLowerCase().includes("password")
         ? "password"
         : "identifier";
-
-      setServerError({ field, message: result.error });
+      setError(field, { type: "server", message: result.error });
     }
   };
 
@@ -56,10 +47,7 @@ const LoginForm = ({ submitForm }) => {
           {...register("identifier")}
         />
         {errors.identifier && (
-          <p className="errorMessage">{errors.identifier.message}</p>
-        )}
-        {serverError?.field === "identifier" && (
-          <p className="errorMessage">{serverError.message}</p>
+          <p className={styles.errorMessage}>{errors.identifier.message}</p>
         )}
 
         <TextField
@@ -68,10 +56,7 @@ const LoginForm = ({ submitForm }) => {
           {...register("password")}
         />
         {errors.password && (
-          <p className="errorMessage">{errors.password.message}</p>
-        )}
-        {serverError?.field === "password" && (
-          <p className="errorMessage">{serverError.message}</p>
+          <p className={styles.errorMessage}>{errors.password.message}</p>
         )}
       </div>
 
