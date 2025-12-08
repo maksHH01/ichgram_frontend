@@ -92,7 +92,7 @@ const Profile = () => {
             ) : (
               <Button
                 text={isFollowing ? "Unfollow" : "Follow"}
-                color={isFollowing ? "danger" : "primary"}
+                color={isFollowing ? "basic" : "primary"}
                 onClick={isFollowing ? handleUnfollow : handleFollow}
                 disabled={isProcessing}
               />

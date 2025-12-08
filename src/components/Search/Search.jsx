@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import DropdownPanel from "../../layouts/DropdownPanel/DropdownPanel";
 import { searchUsers } from "../../shared/api/profile-api";
 import styles from "./Search.module.css";
@@ -16,8 +15,8 @@ const Search = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (!query.trim()) {
-      const id = setTimeout(() => setResults([]), 0);
-      return () => clearTimeout(id);
+      setResults([]);
+      return;
     }
 
     const timeout = setTimeout(async () => {
@@ -34,11 +33,8 @@ const Search = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (!isOpen) {
-      const id = setTimeout(() => {
-        setQuery("");
-        setResults([]);
-      }, 0);
-      return () => clearTimeout(id);
+      setQuery("");
+      setResults([]);
     }
   }, [isOpen]);
 
@@ -59,13 +55,24 @@ const Search = ({ isOpen, onClose }) => {
 
   return (
     <DropdownPanel isOpen={isOpen} onClose={onClose} title="Search">
-      <input
-        type="text"
-        placeholder="Search"
-        className={styles.input}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
+      <div className={styles.inputWrapper}>
+        <input
+          type="text"
+          placeholder="Search"
+          className={styles.input}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        {query && (
+          <button
+            className={styles.clearBtn}
+            onClick={() => setQuery("")}
+            type="button"
+          >
+            <img src="/closeBtn.svg" alt="Clear" />
+          </button>
+        )}
+      </div>
 
       {displayedList.length > 0 && (
         <>
@@ -91,7 +98,6 @@ const Search = ({ isOpen, onClose }) => {
                 />
                 <div className={styles.userInfo}>
                   <p>{user.username}</p>
-                  <span className={styles.fullname}>{user.fullname}</span>
                 </div>
               </li>
             ))}

@@ -1,10 +1,7 @@
 .postsBox {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    /* justify-content: center; */
-    /* display: flex;
-    flex-wrap: wrap; */
-    padding-right: 4rem;
-
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  padding-right: 4rem;
+  padding: 59px 10rem 40px 70px;
 }

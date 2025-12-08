@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./Messages.module.css";
 
-import noPhoto from "../../../public/no-photo.png";
-
 const Messages = () => {
   return (
     <div className={styles.messagesPage}>

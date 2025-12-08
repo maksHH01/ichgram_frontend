@@ -71,7 +71,6 @@ const PostComponent = ({ post, onPostUpdate }) => {
 
           {currentUser && currentUser._id !== localAuthor._id && (
             <>
-              <span>•</span>
               <button
                 className={styles.followBtn}
                 onClick={isFollowing ? handleUnfollow : handleFollow}

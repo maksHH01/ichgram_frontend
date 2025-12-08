@@ -10,9 +10,9 @@
 .profileHeader {
   display: flex;
   gap: 90px;
-  align-items: center;
+  align-items: start;
   justify-content: center;
-  margin-bottom: 48px;
+  margin-bottom: 70px;
 }
 
 .profileInfo {

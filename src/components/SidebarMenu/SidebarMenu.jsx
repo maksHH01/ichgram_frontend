@@ -29,7 +29,6 @@ const Sidebar = ({
     navigate("/");
   };
 
-  // 🔥 Универсальная функция
   const togglePanel = (panel) => {
     if (activePanel === panel) {
       onClosePanels();
