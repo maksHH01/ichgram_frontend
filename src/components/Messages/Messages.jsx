@@ -10,7 +10,7 @@ const Messages = () => {
         <div className={`${styles.chatItem} ${styles.active}`}>
           <img
             className={styles.avatarSm}
-            src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
+            src="/moc/alex.jpg"
             alt="userMessageAvatar"
           />
           <div className={styles.chatInfo}>
@@ -22,11 +22,7 @@ const Messages = () => {
         </div>
 
         <div className={styles.chatItem}>
-          <img
-            className={styles.avatarSm}
-            src="/moc/toa-heftiba-DMxHZhWw-nM-unsplash.jpg"
-            alt="John"
-          />
+          <img className={styles.avatarSm} src="/moc/john.jpg" alt="John" />
           <div className={styles.chatInfo}>
             <div className={styles.chatName}>John</div>
             <div className={styles.chatLast}>
@@ -40,7 +36,7 @@ const Messages = () => {
         <div className={styles.chatHeader}>
           <img
             className={styles.headerAvatar}
-            src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
+            src="/moc/alex.jpg"
             alt="Alex avatar"
           />
           <div className={styles.headerTitle}>Alex</div>
@@ -49,7 +45,7 @@ const Messages = () => {
         <div className={styles.userHero}>
           <img
             className={styles.heroAvatar}
-            src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
+            src="/moc/alex.jpg"
             alt="Alex avatar"
           />
           <div className={styles.heroName}>Alex</div>
@@ -61,11 +57,7 @@ const Messages = () => {
 
         <div className={styles.chatMessages}>
           <div className={`${styles.row} ${styles.leftRow}`}>
-            <img
-              className={styles.msgAvatar}
-              src="/moc/bruno-van-der-kraan-G1QoWFJk2Fs-unsplash.jpg"
-              alt="Alex"
-            />
+            <img className={styles.msgAvatar} src="/moc/alex.jpg" alt="Alex" />
             <div className={`${styles.message} ${styles.left}`}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.

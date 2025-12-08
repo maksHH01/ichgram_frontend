@@ -1,27 +1,92 @@
 import React from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "./Footer.module.css";
-import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer = ({
+  onToggleSearch,
+  onToggleNotifications,
+  onClosePanels,
+  activePanel,
+}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isModalOpen = !!location.state?.background;
+
+  const resetState = () => {
+    onClosePanels();
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (isModalOpen) {
+      navigate(location.state.background.pathname);
+    }
+
+    if (activePanel === "search") {
+      onClosePanels();
+    } else {
+      onClosePanels();
+      onToggleSearch();
+    }
+  };
+
+  const handleNotifications = (e) => {
+    e.preventDefault();
+
+    if (isModalOpen) {
+      navigate(location.state.background.pathname);
+    }
+
+    if (activePanel === "notifications") {
+      onClosePanels();
+    } else {
+      onClosePanels();
+      onToggleNotifications();
+    }
+  };
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+    onClosePanels();
+
+    const background = location.state?.background || location;
+    navigate("/create-new-post", { state: { background } });
+  };
+
+  const handleNavigation = () => {
+    resetState();
+  };
+
   return (
     <footer className={styles.footer}>
       <nav className={styles.nav}>
-        <Link to="/dashboard" className={styles.link}>
+        <Link
+          to="/dashboard"
+          className={styles.link}
+          onClick={handleNavigation}
+        >
           Home
         </Link>
-        <Link to="/search" className={styles.link}>
+
+        <Link to="#" className={styles.link} onClick={handleSearch}>
           Search
         </Link>
-        <Link to="/explore" className={styles.link}>
+
+        <Link to="/explore" className={styles.link} onClick={handleNavigation}>
           Explore
         </Link>
-        <Link to="/messages" className={styles.link}>
+
+        <Link to="/messages" className={styles.link} onClick={handleNavigation}>
           Messages
         </Link>
-        <Link to="/notifications" className={styles.link}>
+
+        <Link to="#" className={styles.link} onClick={handleNotifications}>
           Notifications
         </Link>
-        <Link to="/create-new-post" className={styles.link}>
+
+        <Link to="#" className={styles.link} onClick={handleCreate}>
           Create
         </Link>
       </nav>

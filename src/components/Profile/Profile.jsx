@@ -66,6 +66,10 @@ const Profile = () => {
     fetchUser();
   }, [username, dispatch, currentUser, posts.length]);
 
+  const handleMessageClick = () => {
+    navigate("/messages");
+  };
+
   if (!user) return <p>Loading profile...</p>;
   if (loading) return <p>Loading posts...</p>;
   if (error) return <p>{error}</p>;
@@ -90,12 +94,17 @@ const Profile = () => {
                 Edit Profile
               </button>
             ) : (
-              <Button
-                text={isFollowing ? "Unfollow" : "Follow"}
-                color={isFollowing ? "basic" : "primary"}
-                onClick={isFollowing ? handleUnfollow : handleFollow}
-                disabled={isProcessing}
-              />
+              <div className={styles.actionButtons}>
+                <Button
+                  text={isFollowing ? "Unfollow" : "Follow"}
+                  color={isFollowing ? "basic" : "primary"}
+                  onClick={isFollowing ? handleUnfollow : handleFollow}
+                  disabled={isProcessing}
+                />
+                <button className={styles.editBtn} onClick={handleMessageClick}>
+                  Message
+                </button>
+              </div>
             )}
           </div>
 

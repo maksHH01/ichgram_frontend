@@ -12,8 +12,8 @@ const PostActionsModal = ({ postId, onClose, onEditClick, onDeleted }) => {
     try {
       if (!token) throw new Error("No token");
 
-      await deletePost(postId, token); // ждем удаление
-      dispatch(setShouldReloadPosts(true)); // говорим профилю обновиться
+      await deletePost(postId, token);
+      dispatch(setShouldReloadPosts(true));
       await onDeleted();
     } catch (error) {
       console.error("Ошибка удаления:", error);

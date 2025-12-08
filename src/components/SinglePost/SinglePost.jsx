@@ -239,7 +239,7 @@ const SinglePost = () => {
             <div className={styles.barLine}>
               <div className={styles.actions}>
                 <img
-                  src={isLiked ? "/like-filled.svg" : "/like-con.svg"}
+                  src={isLiked ? "/red-heart.svg" : "/like-con.svg"}
                   alt="Like"
                   className={styles.icon}
                   onClick={

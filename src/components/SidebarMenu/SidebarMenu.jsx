@@ -25,19 +25,28 @@ const Sidebar = ({
   const currentUser = useSelector(selectAuthUser);
 
   const handleLogout = async () => {
+    onClosePanels();
     await dispatch(logout());
     navigate("/");
   };
 
-  const togglePanel = (panel) => {
+  const isModalOpen = !!location.state?.background;
+
+  const handlePanelClick = (panel) => {
+    if (isModalOpen) {
+      navigate(location.state.background.pathname);
+    }
+
     if (activePanel === panel) {
       onClosePanels();
     } else {
       onClosePanels();
       if (panel === "search") onToggleSearch();
       if (panel === "notifications") onToggleNotifications();
+
       if (panel === "create") {
-        navigate("/create-new-post", { state: { background: location } });
+        const background = location.state?.background || location;
+        navigate("/create-new-post", { state: { background } });
       }
     }
   };
@@ -92,26 +101,19 @@ const Sidebar = ({
     e.preventDefault();
 
     if (item.path) {
-      navigate(item.path);
       onClosePanels();
+      navigate(item.path);
       return;
     }
 
     if (item.panel) {
-      togglePanel(item.panel);
+      handlePanelClick(item.panel);
       return;
     }
 
-    if (item.label === "Profile") {
-      if (!currentUser) return;
+    if (item.label === "Profile" && currentUser) {
+      onClosePanels();
       navigate(`/users/${currentUser.username}`);
-      onClosePanels();
-      return;
-    }
-
-    if (item.label === "Messages") {
-      navigate("/messages");
-      onClosePanels();
       return;
     }
   };
@@ -119,7 +121,7 @@ const Sidebar = ({
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoWrapper}>
-        <Link to="/dashboard">
+        <Link to="/dashboard" onClick={() => onClosePanels()}>
           <img src="/logo.svg" alt="ICHGRAM" className={styles.logo} />
         </Link>
       </div>
@@ -129,7 +131,10 @@ const Sidebar = ({
           const isRouteActive =
             item.path && location.pathname.startsWith(item.path);
           const isPanelActive = item.panel && activePanel === item.panel;
-          const isActive = isRouteActive || isPanelActive;
+          const isCreateActive =
+            item.panel === "create" && location.pathname === "/create-new-post";
+
+          const isActive = isRouteActive || isPanelActive || isCreateActive;
           const isHovered = hoveredItem === item.label;
 
           const imgSrc = item.isAvatar

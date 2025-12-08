@@ -102,7 +102,7 @@ const PostComponent = ({ post, onPostUpdate }) => {
           type="button"
         >
           <img
-            src={isLiked ? "/like-filled.svg" : "/like-con.svg"}
+            src={isLiked ? "/red-heart.svg" : "/like-con.svg"}
             alt={isLiked ? "Liked" : "Not liked"}
             className={styles.icon}
           />

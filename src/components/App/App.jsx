@@ -78,7 +78,15 @@ function App() {
       )}
 
       {!token && <Navigation />}
-      {token && <Footer />}
+
+      {token && (
+        <Footer
+          onToggleNotifications={() => togglePanel("notifications")}
+          onToggleSearch={() => togglePanel("search")}
+          onClosePanels={() => setOpenPanel(null)}
+          activePanel={openPanel}
+        />
+      )}
     </>
   );
 }

@@ -38,6 +38,11 @@
   font-weight: 500;
 }
 
+.actionButtons {
+  display: flex;
+  gap: 10px;
+}
+
 .editBtn {
   padding: 8px 60px;
   background-color: #efefef;
@@ -46,6 +51,7 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-weight: 600;
 }
 
 .editBtn:hover {

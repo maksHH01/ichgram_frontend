@@ -147,7 +147,12 @@ const EditProfile = () => {
         <div className={styles.captionCounter}>{bio.length}/150</div>
       </div>
 
-      <Button onClick={handleSave} text="Save" color="primary" />
+      <Button
+        onClick={handleSave}
+        text="Save"
+        color="primary"
+        className={styles.saveBtn}
+      />
     </div>
   );
 };

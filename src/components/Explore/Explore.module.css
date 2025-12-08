@@ -3,23 +3,23 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   padding: 89px 112px 89px 120px;
-  /* grid-auto-columns: 150px; */
 }
 
 .itemSquare {
   aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .itemWide {
-  /* aspect-ratio: 2 / 4; */
   grid-row: span 2;
-  min-height: 650px;
+  height: 100%;
 }
 
 .postImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  cursor: pointer;
-  /* border-radius: 8px; */
+  display: block;
 }

@@ -32,7 +32,7 @@ const PostComments = ({
                 aria-label={isLiked ? "Unlike comment" : "Like comment"}
               >
                 <img
-                  src={isLiked ? "/like-filled.svg" : "/like-con.svg"}
+                  src={isLiked ? "/red-heart.svg" : "/like-con.svg"}
                   alt={isLiked ? "Liked" : "Not liked"}
                 />
               </button>

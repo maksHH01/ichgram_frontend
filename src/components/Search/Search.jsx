@@ -9,9 +9,22 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Search = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const [recentSearches, setRecentSearches] = useState([]);
+
+  const [recentSearches, setRecentSearches] = useState(() => {
+    try {
+      const saved = localStorage.getItem("recentSearches");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("Ошибка чтения localStorage:", error);
+      return [];
+    }
+  });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+  }, [recentSearches]);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -44,11 +57,21 @@ const Search = ({ isOpen, onClose }) => {
 
     setRecentSearches((prev) => {
       const exists = prev.find((u) => u._id === user._id);
+
+      let newHistory;
       if (exists) {
-        return [user, ...prev.filter((u) => u._id !== user._id)];
+        newHistory = [user, ...prev.filter((u) => u._id !== user._id)];
+      } else {
+        newHistory = [user, ...prev].slice(0, 5);
       }
-      return [user, ...prev.slice(0, 4)];
+
+      return newHistory;
     });
+  };
+
+  const handleClearHistory = () => {
+    setRecentSearches([]);
+    localStorage.removeItem("recentSearches");
   };
 
   const displayedList = query.trim() ? results : recentSearches;
@@ -76,7 +99,27 @@ const Search = ({ isOpen, onClose }) => {
 
       {displayedList.length > 0 && (
         <>
-          {!query.trim() && <p className={styles.subheading}>Recent</p>}
+          {!query.trim() && (
+            <div className={styles.recentHeader}>
+              <p className={styles.subheading}>Recent</p>
+              {recentSearches.length > 0 && (
+                <button
+                  onClick={handleClearHistory}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#0095f6",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    fontSize: "14px",
+                    paddingBottom: "15px",
+                  }}
+                >
+                  Clear all
+                </button>
+              )}
+            </div>
+          )}
 
           <ul className={styles.list}>
             {displayedList.map((user) => (
@@ -98,6 +141,11 @@ const Search = ({ isOpen, onClose }) => {
                 />
                 <div className={styles.userInfo}>
                   <p>{user.username}</p>
+                  {user.fullname && (
+                    <span style={{ color: "#737373", fontSize: "14px" }}>
+                      {user.fullname}
+                    </span>
+                  )}
                 </div>
               </li>
             ))}
