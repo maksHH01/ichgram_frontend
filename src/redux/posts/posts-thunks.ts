@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { Post } from "../../types/Post";
+import type { Post } from "../../shared/types/Post";
 import { getPostsByUsername, createNewPost } from "../../shared/api/posts-api";
 
 export const fetchPostsByUsername = createAsyncThunk<Post[], string>(

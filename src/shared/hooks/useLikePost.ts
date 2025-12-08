@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useCallback, useState } from "react";
 import type { RootState } from "../../redux/store";
-import type { Post } from "../../types/Post";
+import type { Post } from "../types/Post";
 import { likePost, unlikePost, getPostById } from "../api/posts-api";
 
 export const useLikePost = (

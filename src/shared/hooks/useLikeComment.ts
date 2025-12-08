@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import { useCallback, useState } from "react";
 import type { RootState } from "../../redux/store";
 import { likeComment, unlikeComment, getPostById } from "../api/posts-api";
-import type { Post } from "../../types/Post";
-import type { Comment } from "../../types/Comment";
+import type { Post } from "../types/Post";
+import type { Comment } from "../types/Comment";
 
 export const useLikeComment = (
   post: Post | null,

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import PostComponent from "../../layouts/Post/PostComponent";
-import PostsFinished from "../../layouts/PostsFinished/PostsFinished";
+import PostComponent from "../../shared/components/Post/PostComponent";
+import PostsFinished from "../../shared/components/PostsFinished/PostsFinished";
 
 import { getFeedPosts } from "../../shared/api/posts-api";
 

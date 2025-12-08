@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { login, getCurrent, logout, signup } from "./auth-thunks";
-import type { User } from "../../types/User";
+import type { User } from "../../shared/types/User";
 
 export interface IUser extends User {
   email: string;

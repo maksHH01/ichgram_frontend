@@ -1,4 +1,4 @@
-import Messages from "../../components/Messages/Messages";
+import Messages from "../../modules/Messages/Messages";
 
 const MessagesPage = () => {
   return <Messages />;

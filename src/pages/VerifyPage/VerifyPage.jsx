@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ConfirmationPlaceholder from "../../layouts/ConfirmationPlaceholder/ConfirmationPlaceholder";
+import ConfirmationPlaceholder from "../../shared/components/ConfirmationPlaceholder/ConfirmationPlaceholder";
 
 const VerifyPage = () => {
   const [searchParams] = useSearchParams();

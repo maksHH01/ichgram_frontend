@@ -1,4 +1,4 @@
-import Explore from "../../components/Explore/Explore";
+import Explore from "../../modules/Explore/Explore";
 
 const ExplorePage = () => {
   return <Explore />;

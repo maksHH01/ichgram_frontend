@@ -1,5 +1,5 @@
 import { backendInstance } from "./instance";
-import type { Post } from "../../types/Post";
+import type { Post } from "../types/Post";
 
 const API_ORIGIN = import.meta.env.VITE_API_URL.replace("/api", "");
 
@@ -61,7 +61,7 @@ export const likeComment = async (
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
-  
+
   return data;
 };
 

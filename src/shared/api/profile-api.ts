@@ -1,5 +1,5 @@
 import { backendInstance } from "./instance";
-import type { User } from "../../types/User";
+import type { User } from "../types/User";
 
 export const getUserByUsername = async (username: string): Promise<User> => {
   const res = await backendInstance.get(`/users/${username}`);

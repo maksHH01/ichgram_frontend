@@ -1,5 +1,5 @@
 import React from "react";
-import ConfirmationPlaceholder from "../../layouts/ConfirmationPlaceholder/ConfirmationPlaceholder";
+import ConfirmationPlaceholder from "../../shared/components/ConfirmationPlaceholder/ConfirmationPlaceholder";
 
 const ResetCompletePage = () => {
   return (

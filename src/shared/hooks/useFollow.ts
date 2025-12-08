@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useState } from "react";
 import type { RootState } from "../../redux/store";
-import type { User } from "../../types/User";
+import type { User } from "../types/User";
 import {
   followUser,
   unfollowUser,

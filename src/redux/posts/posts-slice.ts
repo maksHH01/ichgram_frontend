@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Post } from "../../types/Post";
+import type { Post } from "../../shared/types/Post";
 import { fetchPostsByUsername, addNewPost } from "./posts-thunks";
 
 interface PostsState {
