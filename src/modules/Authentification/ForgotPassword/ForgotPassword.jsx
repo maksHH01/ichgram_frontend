@@ -1,11 +1,12 @@
-import styles from "../Authentificate.module.css";
-import lockLogo from "../../../assets/svg/lockIcon.svg";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { sendResetLinkApi } from "../../../shared/api/register-api";
 
 import Button from "../../../shared/components/Button/Button";
 import TextField from "../../../shared/components/TextField/TextField";
+
+import styles from "../Authentificate.module.css";
 
 const ForgotPassword = () => {
   const {
@@ -16,39 +17,51 @@ const ForgotPassword = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    if (!data.identifier) {
-      setError("identifier", { type: "manual", message: "Field is required" });
-      return;
+  const onSubmit = async (data) => {
+    try {
+      await sendResetLinkApi(data.identifier);
+      navigate("/forgot-password/complete");
+    } catch (err) {
+      const message = err?.response?.data?.message || "Something went wrong";
+      setError("identifier", { type: "manual", message });
     }
-
-    navigate("/forgot-password/complete");
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.formSectionForgotPass}>
-        <div className={styles.cardForgotPass}>
-          <img src={lockLogo} alt="lock logo" />
+      <div className={styles.formSectionChangePass}>
+        <div className={styles.card}>
+          <img
+            className={styles.logoChangePass}
+            src="/forgot-password.svg"
+            alt="changePass logo"
+          />
           <p className={styles.subtitleBlack}>Trouble logging in?</p>
-          <p className={styles.subtitleForgotPass}>
+          <h5 className={styles.changePassInfo}>
             Enter your email, phone, or username and we'll send you a link to
             get back into your account.
-          </p>
+          </h5>
 
-          <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={styles.formForgotPass}
+          >
             <TextField
               placeholder="Email or Username"
               {...register("identifier", { required: "Field is required" })}
             />
-            {errors.identifier && (
-              <p className={styles.errorMessage}>{errors.identifier.message}</p>
+            {errors.identifier?.message && (
+              <p className="errorMessage">{errors.identifier.message}</p>
             )}
 
-            <Button type="submit" text="Reset your password" />
+            <Button
+              className={styles.btn}
+              type="submit"
+              text="Reset your password"
+            />
           </form>
 
-          <div className={styles.separatorContainerForgotPass}>
+          <div className={styles.separatorContainer}>
             <div className={styles.separator}></div>
             <span className={styles.orText}>OR</span>
             <div className={styles.separator}></div>

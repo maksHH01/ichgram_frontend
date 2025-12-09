@@ -12,7 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import authReducer from "./auth/auth-slice";
-import postsReducer from "./posts/post-slice";
+import postsReducer from "./posts/posts-slice";
 
 const persistConfig = {
   key: "auth",

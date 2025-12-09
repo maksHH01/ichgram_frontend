@@ -1,0 +1,21 @@
+:root {
+  --white-background: #ffffff;
+  --button-main-blue: #0095f6;
+  --error-message-color: #ff0014;
+  --delete-danger-color: #ed4956;
+
+  --dark-blue-text: #00376b;
+  --grey-text: #737373;
+  --grey-text-hover: #000000;
+  --main-text-color: #262626;
+
+  --separator-grey-color: #dbdbdb;
+
+  --main-font-size: 14px;
+  --bigger-font-size: 16px;
+  --footer-font-size: 12px;
+
+  --sidebar-width: 245px;
+
+  --grey-background: #efefef;
+}

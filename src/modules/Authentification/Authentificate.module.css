@@ -4,7 +4,6 @@
   align-items: center;
   min-height: 100vh;
   border-radius: 1px;
-  /* padding-bottom: 20px; */
 }
 
 .imageSection {
@@ -25,71 +24,47 @@
   flex-direction: column;
   gap: 10px;
   position: relative;
-  width: 100%;
 }
 
-.formSectionForgotPass {
+.formSectionChangePass {
   flex: 1;
-  max-width: 350px;
+  max-width: 390px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
   position: relative;
-  width: 100%;
-  max-width: 390px;
-}
-
-.formSectionForgotPass {
-  gap: 0px;
 }
 
 .card {
   background-color: white;
   border: 1px solid #dbdbdb;
-  padding: 30px 40px 23px 40px;
-  text-align: center;
-  width: 100%;
-}
-.cardForgotPass {
-  background-color: white;
-  border: 1px solid #dbdbdb;
-  padding: 26px 45px 80px 45px;
-  text-align: center;
-  width: 100%;
-}
-
-.cardForgotPass > img {
-  margin: 0 auto;
-}
-
-.cardSignUp {
-  background-color: white;
-  border: 1px solid #dbdbdb;
-  padding: 19px 39px 30px 39px;
+  border-radius: 2px;
+  padding: 30px 39px;
   text-align: center;
 }
 
 .logo {
-  margin: 0 auto;
+  font-family: "Billabong", cursive;
+  font-size: 40px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 26px;
   /* margin-top: 20px; */
+}
+
+.formForgotPass {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
 }
 
 .formfields {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-}
-
-.errorMessage {
-  color: var(--error-message-color);
-  text-align: start;
-  font-size: 12px;
+  gap: 6px;
 }
 
 .separatorContainer {
@@ -97,14 +72,6 @@
   align-items: center;
   gap: 10px;
   margin: 10px 0;
-}
-
-.separatorContainerForgotPass {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 10px 0;
-  padding-top: 50px;
 }
 
 .separator {
@@ -117,29 +84,23 @@
   color: #8e8e8e;
   font-weight: 600;
   font-size: 13px;
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .link {
   background: none;
   border: none;
   color: var(--dark-blue-text);
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
-  margin-top: clamp(16px, 4vw, 40px);
+  margin-top: 20px;
   text-decoration: none;
-}
-
-.link:hover {
-  color: var(--button-main-blue);
 }
 
 .signupCard {
   background-color: white;
   border: 1px solid var(--separator-grey-color);
   text-align: center;
-  padding: 22px;
+  padding: 20px;
 }
 
 .signupText {
@@ -149,44 +110,29 @@
   font-weight: 600;
 }
 
-.signupText:hover {
-  color: var(--dark-blue-text);
-  text-decoration: underline;
-}
-
 .subtitle {
-  color: var(--grey-text-color);
-  font-weight: 800;
+  color: var(--grey-text);
+  font-weight: 700;
   padding-bottom: 35px;
   font-size: var(--bigger-font-size);
-}
-
-.subtitleForgotPass {
-  color: var(--grey-text-color);
-  font-weight: 400;
-  padding-bottom: 14px;
-  font-size: var(--bigger-font-size);
-  font-size: 14px;
 }
 
 .subtitleBlack {
   color: var(--main-text-color);
   font-weight: 800;
-  padding-bottom: 10px;
+  padding-bottom: 13px;
   font-size: var(--bigger-font-size);
-  padding-top: 14px;
 }
 
 .policyText {
   font-size: var(--footer-font-size);
-  color: var(--grey-text-color);
+  color: var(--grey-text);
 }
 
 .termsBox {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 11px 0px;
 }
 
 .backToLogin {
@@ -194,7 +140,7 @@
   border: 1px solid var(--separator-grey-color);
   padding: 14px;
   text-align: center;
-  background-color: var(--input-background-color);
+  background-color: #fafafa;
 }
 
 .backToLoginLink {
@@ -209,5 +155,23 @@
 }
 
 .linkWithoutBorder {
-  padding-top: 13px;
+  padding-top: 16px;
+}
+
+.logoChangePass {
+  padding-bottom: 13px;
+}
+
+.changePassInfo {
+  padding-bottom: 13px;
+}
+
+.btn {
+  margin-bottom: 55px;
+}
+
+.errorMessage {
+  color: var(--error-message-color);
+  text-align: start;
+  font-size: 12px;
 }

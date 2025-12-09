@@ -1,55 +1,84 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import GradientAvatar from "../../shared/components/AvatarWithBorder/AvatarWithBorder";
+import { useFollow } from "../../shared/hooks/useFollow";
+import { getUserByUsername } from "../../shared/api/profile-api";
+import { fetchPostsByUsername } from "../../redux/posts/posts-thunks";
+import { setShouldReloadPosts } from "../../redux/posts/posts-slice";
+
+import GradientAvatar from "../../shared/components/GradientAvatar/GradientAvatar";
 import Button from "../../shared/components/Button/Button";
-import BioWithToggle from "../../shared/components/BioWithToggle/BioWithToggle";
-import ProfilePosts from "../../modules/Profile/ProfilePosts/ProfilePosts";
+import BioWithToggle from "./BioWithToggle/BioWithToggle";
+import ProfilePosts from "./ProfilePosts/ProfilePosts";
 
 import styles from "./Profile.module.css";
-import noPhoto from "../../assets/images/no-profile-pic.jpg";
-
-// Моковые данные пользователя
-const mockUser = {
-  username: "john_doe",
-  fullname: "John Doe",
-  bio: "Front-end developer | React & JSX enthusiast",
-  link: "https://example.com",
-  avatarUrl: noPhoto,
-  followers: ["alice", "bob", "charlie"],
-  following: ["alice", "bob"],
-};
-
-// Моковые посты
-const mockPosts = [
-  { _id: "1", imageUrl: noPhoto },
-  { _id: "2", imageUrl: noPhoto },
-  { _id: "3", imageUrl: noPhoto },
-  { _id: "4", imageUrl: noPhoto },
-];
 
 const Profile = () => {
   const { username } = useParams();
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
+
+  const shouldReloadPosts = useSelector(
+    (state) => state.posts.shouldReloadPosts
+  );
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const currentUser = useSelector((state) => state.auth.user);
+  const posts = useSelector((state) => state.posts.posts);
+  const loading = useSelector((state) => state.posts.loading);
+  const error = useSelector((state) => state.posts.error);
+
+  const { isFollowing, handleFollow, handleUnfollow, isProcessing } = useFollow(
+    user,
+    setUser
+  );
 
   useEffect(() => {
-    // Симуляция загрузки профиля
-    setUser(mockUser);
-    setPosts(mockPosts);
-  }, [username]);
+    if (shouldReloadPosts && username) {
+      dispatch(fetchPostsByUsername(username));
+      dispatch(setShouldReloadPosts(false));
+    }
+  }, [shouldReloadPosts, dispatch, username]);
+
+  useEffect(() => {
+    if (!username) return;
+    dispatch(fetchPostsByUsername(username));
+  }, [username, dispatch]);
+
+  useEffect(() => {
+    if (!username) return;
+    if (username === currentUser?.username && posts.length === 0) {
+      dispatch(fetchPostsByUsername(username));
+    }
+
+    const fetchUser = async () => {
+      try {
+        const freshUser = await getUserByUsername(username);
+        setUser(freshUser);
+      } catch (err) {
+        console.error("Error loading profile:", err);
+      }
+    };
+
+    fetchUser();
+  }, [username, dispatch, currentUser, posts.length]);
+
+  const handleMessageClick = () => {
+    navigate("/messages");
+  };
 
   if (!user) return <p>Loading profile...</p>;
-
-  const isCurrentUser = username === mockUser.username;
+  if (loading) return <p>Loading posts...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileHeader}>
         <GradientAvatar
-          src={user.avatarUrl || noPhoto}
+          src={user.avatarUrl || "/no-profile-pic-icon-11.jpg"}
           size={168}
           alt={`${user.username} avatar`}
         />
@@ -57,7 +86,7 @@ const Profile = () => {
           <div className={styles.topRow}>
             <h2>{user.username}</h2>
 
-            {isCurrentUser ? (
+            {currentUser?.username === user.username ? (
               <button
                 className={styles.editBtn}
                 onClick={() => navigate(`/users/${username}/edit-my-profile`)}
@@ -65,7 +94,17 @@ const Profile = () => {
                 Edit Profile
               </button>
             ) : (
-              <Button text="Follow" color="primary" onClick={() => {}} />
+              <div className={styles.actionButtons}>
+                <Button
+                  text={isFollowing ? "Unfollow" : "Follow"}
+                  color={isFollowing ? "basic" : "primary"}
+                  onClick={isFollowing ? handleUnfollow : handleFollow}
+                  disabled={isProcessing}
+                />
+                <button className={styles.editBtn} onClick={handleMessageClick}>
+                  Message
+                </button>
+              </div>
             )}
           </div>
 
@@ -86,7 +125,7 @@ const Profile = () => {
 
           <div className={styles.bio}>
             <strong>{user.fullname}</strong>
-            <BioWithToggle text={user.bio} />
+            <BioWithToggle text={user.bio} maxChars={80} />
             {user.link && (
               <Link to={user.link} rel="noopener noreferrer">
                 {user.link}

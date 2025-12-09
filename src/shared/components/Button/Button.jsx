@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./Button.module.css";
 
 const Button = ({
@@ -7,13 +8,12 @@ const Button = ({
   disabled = false,
   type = "button",
   onClick,
+  className,
 }) => {
-  const colors = ["primary", "secondary", "danger"];
-  const buttonColor = colors.includes(color) ? color : "primary";
   return (
     <button
       type={type}
-      className={`${styles.button} ${styles[buttonColor]}`}
+      className={`${styles.button} ${styles[color]} ${className || ""}`}
       disabled={disabled || loading}
       onClick={onClick}
     >

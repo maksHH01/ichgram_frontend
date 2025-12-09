@@ -1,10 +1,6 @@
 import EditProfile from "../../modules/Profile/EditProfile/EditProfile";
 
 const EditProfilePage = () => {
-  return (
-    <>
-      <EditProfile />
-    </>
-  );
+  return <EditProfile />;
 };
 export default EditProfilePage;

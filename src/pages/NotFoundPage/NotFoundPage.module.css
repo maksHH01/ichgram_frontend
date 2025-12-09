@@ -1,0 +1,19 @@
+.notFoundContainer {
+  display: flex;
+  gap: 44px;
+  padding: 60px 0px 0px 70px;
+}
+
+.notFoundText {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.notFoundParagraph {
+  width: 70%;
+  color: var(--grey-text);
+  font-size: var(--bigger-font-size);
+  font-weight: 600;
+}

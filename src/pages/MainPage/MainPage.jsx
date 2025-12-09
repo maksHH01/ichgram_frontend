@@ -1,45 +1,26 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import PostsFinished from "../../shared/components/FinishedPosts/PostsFinished";
-import PostComponent from "../../shared/components/PostComponent/PostComponent";
+import PostComponent from "../../shared/components/Post/PostComponent";
+import PostsFinished from "../../shared/components/PostsFinished/PostsFinished";
+
+import { getFeedPosts } from "../../shared/api/posts-api";
 
 import styles from "./MainPage.module.css";
-import avatar from "../../assets/images/no-profile-pic.jpg";
-import postPhoto from "../../assets/images/post-photo.png";
 
 const MainPage = () => {
   const token = useSelector((state) => state.auth.token);
   const [posts, setPosts] = useState([]);
 
-  // Заглушка постов для интерфейса
-  const defaultPosts = Array.from({ length: 5 }).map((_, i) => ({
-    _id: String(i + 1),
-    author: { username: `User${i + 1}`, avatarUrl: avatar },
-    likes: [],
-    comments: [],
-    caption: `This is a placeholder caption for post ${i + 1}.`,
-    imageUrl: postPhoto,
-  }));
-
   useEffect(() => {
-    // Если токена нет, просто используем заглушки
-    if (!token) {
-      setPosts(defaultPosts);
-      return;
-    }
+    if (!token) return;
 
-    // Здесь можно вставить fetch с бэкендом, когда он будет готов
     async function fetchPosts() {
       try {
-        // const data = await getFeedPosts(token);
-        // setPosts(data);
-
-        // Пока что используем заглушки
-        setPosts(defaultPosts);
+        const data = await getFeedPosts(token);
+        setPosts(data);
       } catch (error) {
-        console.error("Ошибка загрузки постов:", error);
-        setPosts(defaultPosts); // fallback на заглушки
+        console.error("Failed to load posts:", error);
       }
     }
 
@@ -53,7 +34,7 @@ const MainPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <div className={styles.postsBox}>
         {posts.map((post) => (
           <PostComponent
@@ -64,7 +45,7 @@ const MainPage = () => {
         ))}
       </div>
       <PostsFinished />
-    </div>
+    </>
   );
 };
 

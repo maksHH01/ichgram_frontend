@@ -1,36 +1,75 @@
-import React, { useState } from "react";
-import styles from "../Authentificate.module.css";
-import previewImage from "../../../assets/images/preview-image.png";
-import logo from "../../../assets/svg/main-logo.svg";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 
+import { selectAuth } from "../../../redux/auth/auth-selectors";
+import { login } from "../../../redux/auth/auth-thunks";
+
+import { verifyUserApi } from "../../../shared/api/register-api";
 import LoginForm from "./LoginForm/LoginForm";
-import { Link } from "react-router-dom";
+
+import styles from "../Authentificate.module.css";
 
 const Login = () => {
-  const [loading, setLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const verificationCode = searchParams.get("verificationCode");
 
-  const submitForm = async (data) => {
-    setLoading(true);
-    console.log("Form data:", data);
-    setLoading(false);
+  const [successVerify, setSuccessVerify] = useState(false);
 
-    return { success: true };
+  const { loading } = useSelector(selectAuth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (verificationCode) {
+      const fetchVerify = async () => {
+        try {
+          await verifyUserApi(verificationCode);
+          setSuccessVerify(true);
+          setSearchParams({});
+        } catch (error) {
+          console.error("Verification failed", error);
+        }
+      };
+      fetchVerify();
+    }
+  }, [verificationCode, setSearchParams]);
+
+  const submitForm = async (payload) => {
+    const result = await dispatch(login(payload));
+
+    if (login.fulfilled.match(result)) {
+      navigate("/dashboard");
+      return { success: true };
+    }
+
+    if (login.rejected.match(result)) {
+      return {
+        success: false,
+        error: result.payload || "Invalid credentials",
+      };
+    }
+
+    return { success: false, error: "Unknown error" };
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.imageSection}>
         <img
-          src={previewImage}
-          alt="app preview"
+          src="/login-image.png"
+          alt="App preview"
           className={styles.previewImage}
         />
       </div>
 
       <div className={styles.formSection}>
         <div className={styles.card}>
-          <img src={logo} alt="ICHGRAM logo" className={styles.logo} />
-          <LoginForm submitForm={submitForm} />
+          <img src="/logo.svg" alt="ICHGRAM logo" className={styles.logo} />
+          {successVerify && (
+            <p className={styles.subtitleBlack}>Email successfully verified</p>
+          )}
+          <LoginForm submitForm={submitForm} loading={loading} />
         </div>
 
         <div className={styles.signupCard}>

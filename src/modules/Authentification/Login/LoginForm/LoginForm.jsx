@@ -1,25 +1,31 @@
-import styles from "../../Authentificate.module.css";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-
-import Button from "../../../../shared/components/Button/Button";
-import TextField from "../../../../shared/components/TextField/TextField";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import TextField from "../../../../shared/components/TextField/TextField";
+import Button from "../../../../shared/components/Button/Button";
+import loginSchema from "./loginSchema";
+import { selectAuth } from "../../../../redux/auth/auth-selectors";
+
+import styles from "../../Authentificate.module.css";
+
 const LoginForm = ({ submitForm }) => {
+  const { loading: authLoading } = useSelector(selectAuth);
+
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  const [serverError, setServerError] = useState(null);
-
   const onSubmit = async (data) => {
-    setServerError(null);
     const result = await submitForm(data);
 
     if (result.success) {
@@ -28,8 +34,7 @@ const LoginForm = ({ submitForm }) => {
       const field = result.error.toLowerCase().includes("password")
         ? "password"
         : "identifier";
-
-      setServerError({ field, message: result.error });
+      setError(field, { type: "server", message: result.error });
     }
   };
 
@@ -37,33 +42,30 @@ const LoginForm = ({ submitForm }) => {
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <div className={styles.formfields}>
         <TextField
-          placeholder="Email or Username"
+          placeholder="Username or Email"
           type="text"
-          {...register("identifier", {
-            required: "Enter your email or username",
-          })}
+          {...register("identifier")}
         />
         {errors.identifier && (
           <p className={styles.errorMessage}>{errors.identifier.message}</p>
-        )}
-        {serverError?.field === "identifier" && (
-          <p className={styles.errorMessage}>{serverError.message}</p>
         )}
 
         <TextField
           placeholder="Password"
           type="password"
-          {...register("password", { required: "Enter your password" })}
+          {...register("password")}
         />
         {errors.password && (
           <p className={styles.errorMessage}>{errors.password.message}</p>
         )}
-        {serverError?.field === "password" && (
-          <p className={styles.errorMessage}>{serverError.message}</p>
-        )}
       </div>
 
-      <Button type="submit" text="Log in" color="primary" />
+      <Button
+        type="submit"
+        text="Log in"
+        color="primary"
+        loading={authLoading}
+      />
 
       <div className={styles.separatorContainer}>
         <div className={styles.separator}></div>

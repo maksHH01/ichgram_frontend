@@ -1,6 +1,6 @@
 .button {
   font-weight: 600;
-  padding: 7px 16px;
+  padding: 8px 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -16,7 +16,7 @@
 }
 
 .primary:hover {
-  background-color: var(--grey-text-hover);
+  background-color: var(--main-text-color);
 }
 
 .primary:disabled {
@@ -46,4 +46,12 @@
 .danger:disabled {
   background-color: #f7b9be;
   cursor: not-allowed;
+}
+
+.basic {
+  background-color: #efefef;
+}
+
+.basic:hover {
+  background-color: #e2e2e2;
 }

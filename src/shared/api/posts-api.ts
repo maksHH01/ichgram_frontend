@@ -1,11 +1,12 @@
 import { backendInstance } from "./instance";
+import type { Post } from "../types/Post";
 
 const API_ORIGIN = import.meta.env.VITE_API_URL.replace("/api", "");
 
 export const getExplorePosts = async () => {
   const { data } = await backendInstance.get("/posts/explore");
 
-  const normalized = data.map((post) => ({
+  const normalized = data.map((post: any) => ({
     ...post,
     imageUrl: `${API_ORIGIN}${post.imageUrl}`,
   }));
@@ -13,10 +14,10 @@ export const getExplorePosts = async () => {
   return normalized;
 };
 
-export const getPostsByUsername = async (username) => {
+export const getPostsByUsername = async (username: string): Promise<Post[]> => {
   const res = await backendInstance.get(`/posts/${username}/posts`);
 
-  const normalized = res.data.map((post) => ({
+  const normalized = res.data.map((post: any) => ({
     ...post,
     imageUrl: `${API_ORIGIN}${post.imageUrl}`,
   }));
@@ -24,7 +25,7 @@ export const getPostsByUsername = async (username) => {
   return normalized;
 };
 
-export const getPostById = async (postId) => {
+export const getPostById = async (postId: string): Promise<Post> => {
   const { data } = await backendInstance.get(`/posts/${postId}`);
 
   return {
@@ -33,7 +34,7 @@ export const getPostById = async (postId) => {
   };
 };
 
-export const likePost = async (postId, token) => {
+export const likePost = async (postId: string, token: string) => {
   const { data } = await backendInstance.post(
     `/posts/${postId}/like`,
     {},
@@ -42,7 +43,7 @@ export const likePost = async (postId, token) => {
   return data;
 };
 
-export const unlikePost = async (postId, token) => {
+export const unlikePost = async (postId: string, token: string) => {
   const { data } = await backendInstance.post(
     `/posts/${postId}/unlike`,
     {},
@@ -50,17 +51,25 @@ export const unlikePost = async (postId, token) => {
   );
   return data;
 };
-
-export const likeComment = async (postId, commentId, token) => {
+export const likeComment = async (
+  postId: string,
+  commentId: string,
+  token: string
+) => {
   const { data } = await backendInstance.post(
     `/posts/${postId}/comments/${commentId}/like`,
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
+
   return data;
 };
 
-export const unlikeComment = async (postId, commentId, token) => {
+export const unlikeComment = async (
+  postId: string,
+  commentId: string,
+  token: string
+) => {
   const { data } = await backendInstance.post(
     `/posts/${postId}/comments/${commentId}/unlike`,
     {},
@@ -69,7 +78,10 @@ export const unlikeComment = async (postId, commentId, token) => {
   return data;
 };
 
-export const createNewPost = async (formData, token) => {
+export const createNewPost = async (
+  formData: FormData,
+  token: string
+): Promise<Post> => {
   const response = await backendInstance.post(
     "/posts/create-new-post",
     formData,
@@ -81,16 +93,20 @@ export const createNewPost = async (formData, token) => {
     }
   );
 
-  return response.data;
+  return response.data as Post;
 };
 
-export const deletePost = async (postId, token) => {
+export const deletePost = async (postId: string, token: string) => {
   await backendInstance.delete(`/posts/${postId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-export const editPost = async (postId, caption, token) => {
+export const editPost = async (
+  postId: string,
+  caption: string,
+  token: string
+): Promise<Post> => {
   const { data } = await backendInstance.put(
     `/posts/${postId}/edit`,
     { caption },
@@ -107,16 +123,20 @@ export const editPost = async (postId, caption, token) => {
   };
 };
 
-export const getFeedPosts = async (token) => {
+export async function getFeedPosts(token: string) {
   const response = await backendInstance.get("/posts/dashboard", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
-};
+}
 
-export const addCommentToPost = async (postId, text, token) => {
+export const addCommentToPost = async (
+  postId: string,
+  text: string,
+  token: string
+) => {
   const response = await backendInstance.post(
     `/posts/${postId}/comments`,
     { text },

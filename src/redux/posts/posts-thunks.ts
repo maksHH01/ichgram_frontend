@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import type { Post } from "../../shared/types/Post";
 import { getPostsByUsername, createNewPost } from "../../shared/api/posts-api";
 
-export const fetchPostsByUsername = createAsyncThunk(
+export const fetchPostsByUsername = createAsyncThunk<Post[], string>(
   "posts/fetchByUsername",
   async (username, thunkAPI) => {
     try {
@@ -13,14 +14,15 @@ export const fetchPostsByUsername = createAsyncThunk(
   }
 );
 
-export const addNewPost = createAsyncThunk(
-  "posts/addNewPost",
-  async ({ formData, token }, thunkAPI) => {
-    try {
-      const newPost = await createNewPost(formData, token);
-      return newPost;
-    } catch (err) {
-      return thunkAPI.rejectWithValue("Failed to add post");
-    }
+export const addNewPost = createAsyncThunk<
+  Post,
+  { formData: FormData; token: string },
+  { rejectValue: string }
+>("posts/addNewPost", async ({ formData, token }, thunkAPI) => {
+  try {
+    const newPost = await createNewPost(formData, token);
+    return newPost;
+  } catch (err) {
+    return thunkAPI.rejectWithValue("Failed to add post");
   }
-);
+});

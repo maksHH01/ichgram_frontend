@@ -3,19 +3,17 @@
   flex-direction: column;
   gap: 22px;
   width: 60%;
-  /* align-self: center; */
   margin: 0 auto;
+  padding-top: 48px;
 }
 
 .avatarPreviewBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* gap: 100px; */
   background-color: var(--grey-background);
   border-radius: 20px;
   padding: 16px;
-  /* width: 100%; */
 }
 
 .userInfoBox {
@@ -64,11 +62,12 @@
 .saveBtn {
   background-color: #007aff;
   color: white;
-  padding: 0.8rem;
+  padding: 10px 0.8rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  width: 268px;
 }
 
 .captionCounter {

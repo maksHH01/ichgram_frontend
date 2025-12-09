@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -6,10 +6,11 @@ import {
   getUserByUsername,
   updateUserProfile,
 } from "../../../shared/api/profile-api";
+
 import styles from "./EditProfile.module.css";
 import Button from "../../../shared/components/Button/Button";
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function getFullAvatarUrl(src) {
   if (!src || src.trim() === "") return "/no-profile-pic-icon-11.jpg";
@@ -30,13 +31,12 @@ const EditProfile = () => {
   const [avatarPreview, setAvatarPreview] = useState("");
 
   useEffect(() => {
-    // Если пользователь не тот, кто залогинен — редирект
     if (!username || currentUser?.username !== username) {
       navigate("/dashboard");
       return;
     }
 
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
         const user = await getUserByUsername(username);
         setFullname(user.fullname || "");
@@ -44,26 +44,23 @@ const EditProfile = () => {
         setLink(user.link || "");
         setAvatarPreview(getFullAvatarUrl(user.avatarUrl || ""));
       } catch (err) {
-        console.error("Ошибка при загрузке данных пользователя:", err);
+        console.error("Error loading data:", err);
       }
     };
 
-    fetchUserData();
+    fetchData();
   }, [username, currentUser, navigate]);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
+      setAvatarPreview(URL.createObjectURL(file) || "");
     }
   };
 
   const handleSave = async () => {
-    if (!currentUser?.token) {
-      console.error("Пользователь не авторизован");
-      return;
-    }
+    if (!username) return;
 
     const formData = new FormData();
     formData.append("fullname", fullname);
@@ -72,10 +69,11 @@ const EditProfile = () => {
     if (avatarFile) formData.append("avatar", avatarFile);
 
     try {
+      if (!currentUser?.token) throw new Error("No token");
       await updateUserProfile(formData, currentUser.token);
-      navigate(`/users/${username}`); // Возврат на страницу профиля
+      navigate(`/users/${username}`);
     } catch (err) {
-      console.error("Ошибка при сохранении профиля:", err);
+      console.error("Error saving profile:", err);
     }
   };
 
@@ -88,26 +86,27 @@ const EditProfile = () => {
           <label htmlFor="avatar-upload" className={styles.avatarLabel}>
             <img
               src={avatarPreview || "/no-profile-pic-icon-11.jpg"}
-              alt="Avatar preview"
+              alt="avatar preview"
               className={styles.avatarImg}
             />
           </label>
+
           <div className={styles.userInfo}>
             <p className={styles.userFullname}>{fullname}</p>
             <p className={styles.userBio}>{bio}</p>
           </div>
         </div>
-
         <Button
           type="button"
           text="New photo"
-          color="primary"
           onClick={() => fileInputRef.current?.click()}
+          color="primary"
         />
+
         <input
           ref={fileInputRef}
-          type="file"
           id="avatar-upload"
+          type="file"
           accept="image/*"
           style={{ display: "none" }}
           onChange={handleAvatarChange}
@@ -118,10 +117,10 @@ const EditProfile = () => {
         <h3>Full name</h3>
         <input
           type="text"
+          placeholder="Full name"
           value={fullname}
           onChange={(e) => setFullname(e.target.value)}
           className={styles.input}
-          placeholder="Full name"
         />
       </div>
 
@@ -129,26 +128,31 @@ const EditProfile = () => {
         <h3>Website</h3>
         <input
           type="text"
+          placeholder="Your website"
           value={link}
           onChange={(e) => setLink(e.target.value)}
           className={styles.input}
-          placeholder="Your website"
         />
       </div>
 
       <div className={styles.userInfo} style={{ position: "relative" }}>
         <h3>About</h3>
         <textarea
+          placeholder="About"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           className={styles.textarea}
-          placeholder="About"
           maxLength={150}
         />
         <div className={styles.captionCounter}>{bio.length}/150</div>
       </div>
 
-      <Button onClick={handleSave} text="Save" color="primary" />
+      <Button
+        onClick={handleSave}
+        text="Save"
+        color="primary"
+        className={styles.saveBtn}
+      />
     </div>
   );
 };

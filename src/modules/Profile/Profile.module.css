@@ -1,22 +1,18 @@
 .profilePage {
-  padding: 38px 10%;
+  padding: 38px 80px 0px 180px;
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
 }
 
 .profileHeader {
   display: flex;
-  gap: 85px;
-  align-items: st;
-  justify-content: flex-start;
-  padding-left: 15px;
-
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 75px;
+  gap: 90px;
+  align-items: start;
+  justify-content: center;
+  margin-bottom: 70px;
 }
 
 .profileInfo {
@@ -42,6 +38,11 @@
   font-weight: 500;
 }
 
+.actionButtons {
+  display: flex;
+  gap: 10px;
+}
+
 .editBtn {
   padding: 8px 60px;
   background-color: #efefef;
@@ -50,6 +51,7 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-weight: 600;
 }
 
 .editBtn:hover {
@@ -73,6 +75,10 @@
   font-weight: 600;
   margin-bottom: 4px;
 }
+
+/* .userBio{
+
+} */
 
 .bio a {
   color: #00376b;
