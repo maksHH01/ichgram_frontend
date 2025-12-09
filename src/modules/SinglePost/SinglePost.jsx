@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import { useFooterScrollAdjust } from "../../shared/hooks/useFooterScrollAdjust";
+
 import { getPostById, addCommentToPost } from "../../shared/api/posts-api";
 import GradientAvatar from "../../shared/components/GradientAvatar/GradientAvatar";
 import PostComments from "./PostComments/PostComments";
@@ -28,6 +30,8 @@ export const getDateLabel = (createdAt) => {
 const SinglePost = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
+
+  useFooterScrollAdjust();
 
   const [post, setPost] = useState(null);
   const [author, setAuthor] = useState(null);

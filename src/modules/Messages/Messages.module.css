@@ -68,11 +68,20 @@
   text-overflow: ellipsis;
 }
 
+/* .chatWindow {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+} */
+
 .chatWindow {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: #fff;
+  height: 100vh; /* Фиксируем высоту на весь экран */
+  overflow: hidden; /* Запрещаем скролл самого контейнера */
 }
 
 .chatHeader {
@@ -148,13 +157,43 @@
   font-weight: 600;
 }
 
-.chatMessages {
+/* .chatMessages {
   flex: 1;
-  padding: 16px 16px 55px 16px;
+  padding: 16px 16px 40px 16px;
   display: flex;
   flex-direction: column;
   justify-content: end;
   gap: 17px;
+} */
+
+.chatMessages {
+  flex: 1; /* Занимает всё свободное место между шапкой и инпутом */
+
+  /* 👇 ГЛАВНЫЕ ИЗМЕНЕНИЯ 👇 */
+  overflow-y: auto; /* Включает скролл, если сообщений много */
+  min-height: 0; /* Критически важно для Flexbox, чтобы скролл работал корректно */
+
+  /* Убираем justify-content: end, иначе при скролле верхняя часть (Hero) может обрезаться */
+  /* justify-content: end; <--- УДАЛИ ЭТУ СТРОКУ */
+
+  padding: 16px 16px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+/* Тонкий скроллбар для Chrome/Safari/Edge */
+.chatMessages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatMessages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatMessages::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
 
 .row {
@@ -183,7 +222,7 @@
 
 .message {
   max-width: 520px;
-  padding: 29px 17px;
+  padding: 15px 17px;
   border-radius: 14px;
   line-height: 1.4;
   font-size: 14px;

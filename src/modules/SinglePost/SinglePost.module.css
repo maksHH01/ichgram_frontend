@@ -1,14 +1,28 @@
 .overlay {
   position: fixed;
   top: 0;
-  left: 150px;
+  left: 0;
   right: 0;
   bottom: 0;
+
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: 50;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 50;
+
+  padding-left: 0;
+  padding-bottom: 80px;
+
+  @media (min-width: 769px) {
+    padding-left: 245px;
+    padding-bottom: 0;
+  }
+
+  @media (min-width: 769px) and (max-width: 1263px) {
+    padding-left: 72px;
+  }
 }
 
 .modal {
@@ -18,13 +32,17 @@
   height: 600px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+  max-width: 95%;
+  max-height: 95%;
+
+  position: relative;
+  z-index: 2;
 }
 
 .photoSection {
   flex: 1.5;
   display: flex;
-  /* justify-content: center;
-    align-items: center; */
 }
 
 .photo {
@@ -35,7 +53,6 @@
 
 .postBlock {
   width: 96%;
-  /* height: 100%; */
 }
 
 .infoSection {
@@ -51,14 +68,14 @@
   flex: 1;
   overflow-y: auto;
   padding-bottom: 16px;
-  /* чтобы не прилипал к bottomBar */
+
   min-height: 0;
 }
 
 .bottomBar {
   background-color: white;
   position: relative;
-  /* не sticky */
+
   width: 100%;
   z-index: 1;
 }
@@ -94,7 +111,6 @@
   display: flex;
   gap: 10px;
   padding: 10px 10px;
-  /* align-items: center; */
 }
 
 .authorAvatar {
@@ -150,7 +166,7 @@
 .commentForm {
   display: flex;
   align-items: center;
-  /* gap: 8px; */
+
   padding: 10px;
 }
 

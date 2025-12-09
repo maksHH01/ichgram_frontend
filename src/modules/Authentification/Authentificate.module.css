@@ -31,7 +31,7 @@
   max-width: 390px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
   position: relative;
 }
 
@@ -140,6 +140,7 @@
   border: 1px solid var(--separator-grey-color);
   padding: 14px;
   text-align: center;
+  background-color: #fafafa;
 }
 
 .backToLoginLink {

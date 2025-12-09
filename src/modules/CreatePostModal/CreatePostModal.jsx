@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { addNewPost } from "../../redux/posts/posts-thunks";
 import { setShouldReloadPosts } from "../../redux/posts/posts-slice";
 
+import { useFooterScrollAdjust } from "../../shared/hooks/useFooterScrollAdjust";
+
 import EmojiPickerButton from "../../shared/components/EmojiButton/EmojiButton";
 import GradientAvatar from "../../shared/components/GradientAvatar/GradientAvatar";
 
@@ -12,6 +14,8 @@ import styles from "./CreatePostModal.module.css";
 const CreatePostModal = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useFooterScrollAdjust();
 
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
