@@ -61,12 +61,23 @@ const PostComponent = ({ post, onPostUpdate }) => {
     }
   };
 
+  // Путь к профилю пользователя
+  const profilePath = `/users/${localAuthor.username}`;
+
   return (
     <div className={styles.post}>
       <div className={styles.header}>
-        <GradientAvatar src={localAuthor.avatarUrl} size={30} />
+        {/* Оборачиваем Аватар в Link */}
+        <Link to={profilePath} className={styles.avatarLink}>
+          <GradientAvatar src={localAuthor.avatarUrl} size={30} />
+        </Link>
+
         <div className={styles.authorDetails}>
-          <strong>{localAuthor.username}</strong>
+          {/* Оборачиваем Имя в Link */}
+          <Link to={profilePath} className={styles.usernameLink}>
+            <strong>{localAuthor.username}</strong>
+          </Link>
+
           <span className={styles.date}>• {date} •</span>
 
           {currentUser && currentUser._id !== localAuthor._id && (
@@ -120,7 +131,9 @@ const PostComponent = ({ post, onPostUpdate }) => {
       <div className={styles.likes}>{likesCount} likes</div>
 
       <div className={styles.caption}>
-        <strong>{localAuthor.username}</strong>{" "}
+        <Link to={profilePath} className={styles.usernameLink}>
+          <strong>{localAuthor.username}</strong>
+        </Link>{" "}
         <BioWithToggle text={localPost.caption || ""} />
       </div>
 
@@ -146,7 +159,12 @@ const PostComponent = ({ post, onPostUpdate }) => {
         localPost.comments &&
         localPost.comments.map((comment) => (
           <div key={comment._id} className={styles.comment}>
-            <strong>{comment.author?.username || "Unknown"}</strong>{" "}
+            <Link
+              to={`/users/${comment.author?.username}`}
+              className={styles.usernameLink}
+            >
+              <strong>{comment.author?.username || "Unknown"}</strong>
+            </Link>{" "}
             {comment.text}
           </div>
         ))}

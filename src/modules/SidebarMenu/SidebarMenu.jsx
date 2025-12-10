@@ -32,6 +32,17 @@ const Sidebar = ({
 
   const isModalOpen = !!location.state?.background;
 
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    onClosePanels();
+
+    if (location.pathname === "/dashboard") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/dashboard");
+    }
+  };
+
   const handlePanelClick = (panel) => {
     if (isModalOpen) {
       navigate(location.state.background.pathname);
@@ -121,7 +132,7 @@ const Sidebar = ({
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoWrapper}>
-        <Link to="/dashboard" onClick={() => onClosePanels()}>
+        <Link to="/dashboard" onClick={handleLogoClick}>
           <img src="/logo.svg" alt="ICHGRAM" className={styles.logo} />
         </Link>
       </div>

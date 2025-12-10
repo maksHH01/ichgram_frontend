@@ -109,3 +109,23 @@
   cursor: pointer;
   text-decoration: none;
 }
+
+.usernameLink {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.usernameLink strong {
+  cursor: pointer;
+}
+
+.usernameLink:hover {
+  text-decoration: none;
+}
+
+.avatarLink {
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
