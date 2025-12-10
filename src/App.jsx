@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import ScrollToTop from "./shared/components/ScrollToTop/ScrollToTop";
+
 import { selectToken } from "./redux/auth/auth-selectors";
 import { logout, getCurrent } from "./redux/auth/auth-thunks";
 
@@ -51,6 +53,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       {token && (
         <div className={styles.appLayout}>
           <Sidebar

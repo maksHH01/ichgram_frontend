@@ -111,7 +111,13 @@ const NotificationsPanel = ({ isOpen, onClose, token }) => {
                 />
 
                 <div className={styles.text}>
-                  <span className={styles.username}>
+                  <span
+                    className={styles.username}
+                    onClick={() =>
+                      n.sender && handleGoToUser(n.sender.username)
+                    }
+                    style={{ cursor: n.sender ? "pointer" : "default" }}
+                  >
                     {n.sender?.username || "Unknown User"}
                   </span>{" "}
                   {renderNotificationText(n)}
