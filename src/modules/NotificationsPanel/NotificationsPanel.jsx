@@ -7,20 +7,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
 
-const API_ORIGIN = import.meta.env.VITE_API_URL.replace("/api", "");
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:4000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
-const NotificationsPanel = ({ isOpen, onClose, token }) => {
+const NotificationsPanel = ({ isOpen, onClose, token, setUnreadCount }) => {
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if (!token) return;
-
     const { id: userId } = jwtDecode(token);
-
-    const socket = io(SOCKET_URL, {
+    const socket = io(BACKEND_URL, {
       path: "/socket.io",
       transports: ["websocket"],
       auth: { token },
@@ -31,18 +28,16 @@ const NotificationsPanel = ({ isOpen, onClose, token }) => {
     socket.on("newNotification", (notification) => {
       setNotifications((prev) => {
         if (prev.some((n) => n._id === notification._id)) return prev;
+        setUnreadCount((count) => count + 1);
         return [notification, ...prev];
       });
     });
 
-    return () => {
-      socket.disconnect();
-    };
-  }, [token]);
+    return () => socket.disconnect();
+  }, [token, setUnreadCount]);
 
   useEffect(() => {
     if (!isOpen) return;
-
     getNotifications(token)
       .then((data) => {
         const normalized = data.map((n) => ({
@@ -50,23 +45,24 @@ const NotificationsPanel = ({ isOpen, onClose, token }) => {
           post:
             typeof n.post === "string" ? { _id: n.post, imageUrl: "" } : n.post,
         }));
-
-        const unique = Array.from(
-          new Map(normalized.map((n) => [n._id, n])).values()
-        );
-
-        setNotifications(unique);
+        setNotifications(normalized);
       })
-      .catch((err) => console.error("Failed to fetch notifications:", err));
+      .catch(console.error);
   }, [isOpen, token]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isOpen) {
+      fetch(`${BACKEND_URL}/api/notifications/read`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }).then(() => setUnreadCount(0));
+    }
+  }, [isOpen, token, setUnreadCount]);
 
   const handleGoToUser = (username) => {
     onClose();
     navigate(`/users/${username}`);
   };
-
   const handleGoToPost = (postId) => {
     if (!postId) return;
     onClose();
@@ -88,61 +84,56 @@ const NotificationsPanel = ({ isOpen, onClose, token }) => {
     }
   };
 
+  if (!isOpen) return null;
+
   return (
     <DropdownPanel isOpen={isOpen} onClose={onClose} title="Notifications">
       {notifications.length === 0 ? (
         <p className={styles.subheading}>No new notifications</p>
       ) : (
-        <>
-          <p className={styles.subheading}>New</p>
-          <ul className={styles.list}>
-            {notifications.map((n) => (
-              <li key={n._id} className={styles.notification}>
-                <img
+        <ul className={styles.list}>
+          {notifications.map((n) => (
+            <li key={n._id} className={styles.notification}>
+              <img
+                onClick={() => n.sender && handleGoToUser(n.sender.username)}
+                style={{ cursor: n.sender ? "pointer" : "default" }}
+                src={
+                  n.sender?.avatarUrl
+                    ? `${BACKEND_URL}${n.sender.avatarUrl}`
+                    : "/no-profile-pic-icon-11.jpg"
+                }
+                alt="avatar"
+                className={styles.avatar}
+              />
+
+              <div className={styles.text}>
+                <span
+                  className={styles.username}
                   onClick={() => n.sender && handleGoToUser(n.sender.username)}
                   style={{ cursor: n.sender ? "pointer" : "default" }}
+                >
+                  {n.sender?.username || "Unknown User"}
+                </span>{" "}
+                {renderNotificationText(n)}
+                <span className={styles.time}>{getDateLabel(n.createdAt)}</span>
+              </div>
+
+              {n.post?._id && (
+                <img
+                  onClick={() => handleGoToPost(n.post._id)}
+                  style={{ cursor: "pointer" }}
                   src={
-                    n.sender?.avatarUrl
-                      ? `${API_ORIGIN}${n.sender.avatarUrl}`
-                      : "/no-profile-pic-icon-11.jpg"
+                    n.post?.imageUrl
+                      ? `${BACKEND_URL}${n.post.imageUrl}`
+                      : "/no-post-thumb.jpg"
                   }
-                  alt="avatar"
-                  className={styles.avatar}
+                  alt="thumb"
+                  className={styles.thumb}
                 />
-
-                <div className={styles.text}>
-                  <span
-                    className={styles.username}
-                    onClick={() =>
-                      n.sender && handleGoToUser(n.sender.username)
-                    }
-                    style={{ cursor: n.sender ? "pointer" : "default" }}
-                  >
-                    {n.sender?.username || "Unknown User"}
-                  </span>{" "}
-                  {renderNotificationText(n)}
-                  <span className={styles.time}>
-                    {getDateLabel(n.createdAt)}
-                  </span>
-                </div>
-
-                {n.post?._id && (
-                  <img
-                    onClick={() => handleGoToPost(n.post._id)}
-                    style={{ cursor: "pointer" }}
-                    src={
-                      n.post?.imageUrl
-                        ? `${API_ORIGIN}${n.post.imageUrl}`
-                        : "/no-post-thumb.jpg"
-                    }
-                    alt="thumb"
-                    className={styles.thumb}
-                  />
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
     </DropdownPanel>
   );

@@ -27,6 +27,7 @@ function App() {
   const token = useSelector(selectToken);
 
   const [openPanel, setOpenPanel] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const togglePanel = (panel) => {
     setOpenPanel((prev) => (prev === panel ? null : panel));
@@ -49,6 +50,16 @@ function App() {
           navigate("/login");
         }
       });
+
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const unread = data.filter((n) => !n.isRead).length;
+        setUnreadCount(unread);
+      })
+      .catch(console.error);
   }, [token, dispatch, navigate]);
 
   return (
@@ -61,12 +72,14 @@ function App() {
             onToggleSearch={() => togglePanel("search")}
             onClosePanels={() => setOpenPanel(null)}
             activePanel={openPanel}
+            unreadCount={unreadCount}
           />
 
           <NotificationsPanel
             isOpen={openPanel === "notifications"}
             onClose={() => setOpenPanel(null)}
             token={token}
+            setUnreadCount={setUnreadCount}
           />
 
           <Search

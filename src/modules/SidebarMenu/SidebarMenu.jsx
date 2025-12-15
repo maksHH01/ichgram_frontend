@@ -16,6 +16,7 @@ const Sidebar = ({
   onToggleSearch,
   onClosePanels,
   activePanel,
+  unreadCount,
 }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
 
@@ -165,11 +166,16 @@ const Sidebar = ({
               onMouseLeave={() => setHoveredItem(null)}
               onClick={(e) => handleClick(item, e)}
             >
-              <img
-                src={imgSrc}
-                alt={item.label}
-                className={item.isAvatar ? styles.avatarIcon : styles.icon}
-              />
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imgSrc}
+                  alt={item.label}
+                  className={item.isAvatar ? styles.avatarIcon : styles.icon}
+                />
+                {item.panel === "notifications" && unreadCount > 0 && (
+                  <span className={styles.badge}>{unreadCount}</span>
+                )}
+              </div>
               <span>{item.label}</span>
             </Link>
           );
