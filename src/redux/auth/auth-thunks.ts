@@ -1,25 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { signupUserApi } from "../../shared/api/register-api";
 
-import type { RootState } from "../store";
 import type { IUser } from "./auth-slice";
-
-import { setAuthHeader } from "../../shared/api/setAuthHeader";
 
 import {
   loginUserApi,
   logoutUserApi,
   getCurrentUserApi,
+  AuthResponse,
 } from "../../shared/api/auth-api";
 
 export interface LoginPayload {
   identifier: string;
   password: string;
-}
-
-interface AuthResponse {
-  token: string;
-  user: IUser;
 }
 
 export const login = createAsyncThunk<
@@ -29,6 +22,10 @@ export const login = createAsyncThunk<
 >("auth/login", async (payload, { rejectWithValue }) => {
   try {
     const data = await loginUserApi(payload);
+
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("refreshToken", data.refreshToken);
+
     return data;
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || error.message);
@@ -36,35 +33,40 @@ export const login = createAsyncThunk<
 });
 
 export const getCurrent = createAsyncThunk<
-  AuthResponse,
+  IUser,
   void,
-  { state: RootState; rejectValue: string }
->("auth/current", async (_, { getState, rejectWithValue }) => {
+  { rejectValue: string }
+>("auth/current", async (_, { rejectWithValue }) => {
   try {
-    const { auth } = getState();
-    if (!auth.token) throw new Error("No token found");
+    const token = localStorage.getItem("accessToken");
+    if (!token) throw new Error("No token found");
+
     const data = await getCurrentUserApi();
+
     return data;
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || error.message);
   }
 });
 
-export const logout = createAsyncThunk<
-  boolean,
-  void,
-  { state: RootState; rejectValue: string }
->("auth/logout", async (_, { getState, rejectWithValue }) => {
-  try {
-    const { auth } = getState();
-    if (!auth.token) throw new Error("No token found");
-    await logoutUserApi();
-    setAuthHeader(null);
-    return true;
-  } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || error.message);
+export const logout = createAsyncThunk<boolean, void, { rejectValue: string }>(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await logoutUserApi();
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      return true;
+    } catch (error: any) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
   }
-});
+);
 
 interface SignupResponse {
   message: string;

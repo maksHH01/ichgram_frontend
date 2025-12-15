@@ -1,16 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { login, getCurrent, logout, signup } from "./auth-thunks";
-import type { User } from "../../shared/types/User";
+import { AuthResponse } from "../../shared/api/auth-api";
 
-export interface IUser extends User {
+export interface IUser {
+  _id: string;
   email: string;
-  password: string;
-  token?: string;
+  username: string;
+  fullname: string;
+  avatarUrl?: string;
+  bio?: string;
+  link?: string;
+  verify: boolean;
+  followers: string[];
+  following: string[];
 }
 
 interface AuthState {
-  token: string;
+  token: string | null;
   user: IUser | null;
   loading: boolean;
   error: string | null;
@@ -18,11 +24,11 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: "",
+  token: localStorage.getItem("accessToken"),
   user: null,
   loading: false,
   error: null,
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("accessToken"),
 };
 
 const authSlice = createSlice({
@@ -35,81 +41,64 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
-      // LOGIN
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(
         login.fulfilled,
-        (state, action: PayloadAction<{ token: string; user: IUser }>) => {
+        (state, action: PayloadAction<AuthResponse>) => {
           state.loading = false;
-          state.token = action.payload.token;
+          state.token = action.payload.accessToken;
           state.user = action.payload.user;
           state.isAuthenticated = true;
         }
       )
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "Unknown error";
+        state.error = action.payload as string;
         state.isAuthenticated = false;
+        state.token = null;
       })
 
-      // GET CURRENT
       .addCase(getCurrent.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        getCurrent.fulfilled,
-        (state, action: PayloadAction<{ token: string; user: IUser }>) => {
-          state.loading = false;
-          state.token = action.payload.token;
-          state.user = action.payload.user;
-          state.isAuthenticated = true;
-        }
-      )
+      .addCase(getCurrent.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
       .addCase(getCurrent.rejected, (state) => {
-        state.token = "";
-        state.user = null;
         state.loading = false;
-        state.error = null;
         state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
       })
 
-      // LOGOUT
-      .addCase(logout.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(logout.fulfilled, (state) => {
-        state.token = "";
         state.user = null;
-        state.loading = false;
-        state.error = null;
+        state.token = null;
         state.isAuthenticated = false;
       })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload ?? "Unknown error";
-      })
 
-      // SIGNUP
       .addCase(signup.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(signup.fulfilled, (state) => {
         state.loading = false;
-        state.token = "";
+        state.token = null;
         state.user = null;
         state.isAuthenticated = false;
         state.error = null;
       })
       .addCase(signup.rejected, (state, { payload }) => {
         state.loading = false;
-        state.error = payload || null;
+        state.error = (payload as string) || null;
         state.isAuthenticated = false;
       });
   },
