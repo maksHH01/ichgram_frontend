@@ -1,7 +1,13 @@
 import React from "react";
 import styles from "./Button.module.css";
 
-const Button = ({
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  text: string;
+  color?: string;
+  loading?: boolean;
+}
+
+const Button: React.FC<ButtonProps> = ({
   text,
   color = "primary",
   loading = false,
@@ -13,7 +19,7 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`${styles.button} ${styles[color]} ${className || ""}`}
+      className={`${styles.button} ${styles[color] || ""} ${className || ""}`}
       disabled={disabled || loading}
       {...rest}
     >

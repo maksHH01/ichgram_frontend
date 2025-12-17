@@ -1,19 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
-import EmojiPicker from "emoji-picker-react";
+import { useState, useRef, useEffect } from "react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import styles from "./EmojiButton.module.css";
 
-const EmojiPickerButton = ({ onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const pickerRef = useRef(null);
+type EmojiPickerButtonProps = {
+  onSelect: (emoji: string) => void;
+};
 
-  const handleEmojiClick = (emojiData) => {
+const EmojiPickerButton = ({ onSelect }: EmojiPickerButtonProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+
+  const handleEmojiClick = (emojiData: EmojiClickData): void => {
     onSelect(emojiData.emoji);
     setIsOpen(false);
   };
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (pickerRef.current && !pickerRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent): void => {
+      if (
+        pickerRef.current &&
+        e.target instanceof Node &&
+        !pickerRef.current.contains(e.target)
+      ) {
         setIsOpen(false);
       }
     };

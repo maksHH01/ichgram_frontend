@@ -1,7 +1,19 @@
 import React from "react";
 import styles from "./DropdownPanel.module.css";
 
-const DropdownPanel = ({ isOpen, onClose, title, children }) => {
+interface DropdownPanelProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}
+
+const DropdownPanel: React.FC<DropdownPanelProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+}) => {
   if (!isOpen) return null;
 
   return (

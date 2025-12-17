@@ -10,6 +10,8 @@ const Search = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [recentSearches, setRecentSearches] = useState(() => {
     try {
       const saved = localStorage.getItem("recentSearches");
@@ -29,8 +31,11 @@ const Search = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
+      setIsLoading(false);
       return;
     }
+
+    setIsLoading(true);
 
     const timeout = setTimeout(async () => {
       try {
@@ -38,6 +43,8 @@ const Search = ({ isOpen, onClose }) => {
         setResults(data);
       } catch (err) {
         console.error("Error searching users:", err);
+      } finally {
+        setIsLoading(false);
       }
     }, 400);
 
@@ -48,6 +55,7 @@ const Search = ({ isOpen, onClose }) => {
     if (!isOpen) {
       setQuery("");
       setResults([]);
+      setIsLoading(false);
     }
   }, [isOpen]);
 
@@ -152,6 +160,14 @@ const Search = ({ isOpen, onClose }) => {
           </ul>
         </>
       )}
+
+      {query.trim() && results.length === 0 && !isLoading && (
+        <div className={styles.noResults}>
+          <p>No results found.</p>
+        </div>
+      )}
+
+      {isLoading && <div className={styles.loadingState}></div>}
     </DropdownPanel>
   );
 };

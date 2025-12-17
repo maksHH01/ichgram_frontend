@@ -48,11 +48,7 @@ const shouldShowDate = (currentMsg, prevMsg) => {
 
 const getAvatarSrc = (avatarUrl) => {
   if (!avatarUrl) return "/no-profile-pic-icon-11.jpg";
-
-  if (avatarUrl.startsWith("/moc/")) {
-    return avatarUrl;
-  }
-
+  if (avatarUrl.startsWith("/moc/")) return avatarUrl;
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "";
   return avatarUrl.startsWith("http")
     ? avatarUrl
@@ -76,9 +72,8 @@ const MOCK_USERS_DATA = [
           username: "Alex",
           avatarUrl: "/moc/alex.jpg",
         },
-        receiver: {
-          _id: "USER_PLACEHOLDER",
-        },
+        receiver: { _id: "USER_PLACEHOLDER" },
+        isRead: true,
       },
     ],
   },
@@ -98,9 +93,8 @@ const MOCK_USERS_DATA = [
           username: "John",
           avatarUrl: "/moc/john.jpg",
         },
-        receiver: {
-          _id: "USER_PLACEHOLDER",
-        },
+        receiver: { _id: "USER_PLACEHOLDER" },
+        isRead: true,
       },
     ],
   },
@@ -124,6 +118,11 @@ const Messages = () => {
     }
   });
 
+  const [tempChatPartner, setTempChatPartner] = useState(null);
+  const [activePartnerId, setActivePartnerId] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const chatContainerRef = useRef(null);
+
   useEffect(() => {
     localStorage.setItem(
       "ichgram_global_messages",
@@ -131,7 +130,36 @@ const Messages = () => {
     );
   }, [globalMessages]);
 
-  const [tempChatPartner, setTempChatPartner] = useState(null);
+  useEffect(() => {
+    const interval = setInterval(() => setTimeTick(Date.now()), 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (activePartnerId && currentUser) {
+      setGlobalMessages((prevMessages) => {
+        const hasUnread = prevMessages.some(
+          (msg) =>
+            msg.sender._id === activePartnerId &&
+            msg.receiver._id === currentUser._id &&
+            !msg.isRead
+        );
+
+        if (!hasUnread) return prevMessages;
+
+        return prevMessages.map((msg) => {
+          if (
+            msg.sender._id === activePartnerId &&
+            msg.receiver._id === currentUser._id &&
+            !msg.isRead
+          ) {
+            return { ...msg, isRead: true };
+          }
+          return msg;
+        });
+      });
+    }
+  }, [activePartnerId, currentUser]);
 
   const myChats = useMemo(() => {
     if (!currentUser) return [];
@@ -163,6 +191,7 @@ const Messages = () => {
         lastMessage: lastMsg.text,
         timestamp: lastMsg.createdAt,
         messages: formattedInitialMessages,
+        hasUnread: false,
       });
     });
 
@@ -172,7 +201,6 @@ const Messages = () => {
 
       const isInvolved = senderId === myId || receiverId === myId;
       if (!isInvolved) return;
-
       if (senderId === receiverId) return;
 
       const partner = senderId === myId ? msg.receiver : msg.sender;
@@ -185,6 +213,7 @@ const Messages = () => {
           lastMessageObj: msg,
           timestamp: msg.createdAt,
           messages: [],
+          hasUnread: false,
         });
       }
 
@@ -198,10 +227,21 @@ const Messages = () => {
       }
     });
 
-    let chatsList = Array.from(chatsMap.values()).map((group) => ({
-      ...group,
-      messages: group.messages.sort((a, b) => a.createdAt - b.createdAt),
-    }));
+    let chatsList = Array.from(chatsMap.values()).map((group) => {
+      const sortedMsgs = group.messages.sort(
+        (a, b) => a.createdAt - b.createdAt
+      );
+
+      const unreadCount = sortedMsgs.filter(
+        (m) => m.receiver._id === myId && !m.isRead
+      ).length;
+
+      return {
+        ...group,
+        messages: sortedMsgs,
+        hasUnread: unreadCount > 0,
+      };
+    });
 
     if (
       tempChatPartner &&
@@ -213,21 +253,13 @@ const Messages = () => {
         lastMessage: "",
         timestamp: tempChatPartner.timestamp,
         messages: [],
+        hasUnread: false,
       };
       chatsList = [newChat, ...chatsList];
     }
 
     return chatsList.sort((a, b) => b.timestamp - a.timestamp);
   }, [globalMessages, currentUser, tempChatPartner]);
-
-  const [activePartnerId, setActivePartnerId] = useState(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setActivePartnerId(null);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, [currentUser?._id]);
 
   const activeChat = useMemo(() => {
     return myChats.find((c) => c.partnerId === activePartnerId) || null;
@@ -236,50 +268,6 @@ const Messages = () => {
   const currentMessages = useMemo(() => {
     return activeChat?.messages || [];
   }, [activeChat]);
-
-  const [inputValue, setInputValue] = useState("");
-  const chatContainerRef = useRef(null);
-
-  useEffect(() => {
-    const targetUser = location.state?.startChatWith;
-    if (targetUser && currentUser) {
-      if (targetUser.id === currentUser._id) {
-        navigate(location.pathname, { replace: true });
-        return;
-      }
-
-      const timer = setTimeout(() => {
-        setActivePartnerId(targetUser.id);
-
-        const chatExists = myChats.some((c) => c.partnerId === targetUser.id);
-
-        if (!chatExists) {
-          setTempChatPartner({
-            _id: targetUser.id,
-            username: targetUser.username,
-            avatarUrl: targetUser.avatarUrl,
-            fullname: targetUser.fullname,
-            timestamp: Date.now(),
-          });
-        }
-        navigate(location.pathname, { replace: true, state: {} });
-      }, 0);
-
-      return () => clearTimeout(timer);
-    }
-  }, [location.state, currentUser, myChats, navigate, location.pathname]);
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [activePartnerId, currentMessages.length]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTimeTick(Date.now()), 60000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleChatSelect = (chatId) => {
     setActivePartnerId(chatId);
@@ -309,6 +297,7 @@ const Messages = () => {
         avatarUrl: activeChat.partner.avatarUrl,
         fullname: activeChat.partner.fullname,
       },
+      isRead: false,
     };
 
     setGlobalMessages((prev) => [...prev, newMessage]);
@@ -325,9 +314,7 @@ const Messages = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSendMessage(e);
-    }
+    if (e.key === "Enter") handleSendMessage(e);
   };
 
   const handleViewProfile = () => {
@@ -341,6 +328,38 @@ const Messages = () => {
     if (activeChat?.partner?.isMock) return;
     if (username) navigate(`/users/${username}`);
   };
+
+  useEffect(() => {
+    const targetUser = location.state?.startChatWith;
+    if (targetUser && currentUser) {
+      if (targetUser.id === currentUser._id) {
+        navigate(location.pathname, { replace: true });
+        return;
+      }
+      const timer = setTimeout(() => {
+        setActivePartnerId(targetUser.id);
+        const chatExists = myChats.some((c) => c.partnerId === targetUser.id);
+        if (!chatExists) {
+          setTempChatPartner({
+            _id: targetUser.id,
+            username: targetUser.username,
+            avatarUrl: targetUser.avatarUrl,
+            fullname: targetUser.fullname,
+            timestamp: Date.now(),
+          });
+        }
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state, currentUser, myChats, navigate, location.pathname]);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [activePartnerId, currentMessages.length]);
 
   if (!currentUser) return null;
 
@@ -363,8 +382,23 @@ const Messages = () => {
               alt={chat.partner.username}
             />
             <div className={styles.chatInfo}>
-              <div className={styles.chatName}>{chat.partner.username}</div>
-              <div className={styles.chatLast}>
+              <div className={styles.chatNameRow}>
+                <span
+                  className={`${styles.chatName} ${
+                    chat.hasUnread ? styles.unread : ""
+                  }`}
+                >
+                  {chat.partner.username}
+                </span>
+
+                {chat.hasUnread && <div className={styles.unreadDot}></div>}
+              </div>
+
+              <div
+                className={`${styles.chatLast} ${
+                  chat.hasUnread ? styles.unread : ""
+                }`}
+              >
                 {chat.messages.length > 0 ? (
                   <span>
                     {chat.messages[chat.messages.length - 1].sender._id ===
@@ -419,11 +453,6 @@ const Messages = () => {
                       : "pointer",
                     opacity: activeChat.partner.isMock ? 0.6 : 1,
                   }}
-                  title={
-                    activeChat.partner.isMock
-                      ? "This is a demo user"
-                      : "View Profile"
-                  }
                 >
                   View Profile
                 </button>

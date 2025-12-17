@@ -1,21 +1,25 @@
-import React from "react";
 import styles from "./GradientAvatar.module.css";
-
-const GradientAvatar = ({ src, size = 60, alt = "avatar" }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+interface GradientAvatarProps {
+  src?: string | null;
+  size?: number;
+  alt?: string;
+}
+const GradientAvatar = ({
+  src,
+  size = 60,
+  alt = "avatar",
+}: GradientAvatarProps) => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
   const validSrc =
     src && src.trim() !== ""
       ? src.startsWith("/uploads")
         ? backendUrl + src
         : src
       : "/no-profile-pic-icon-11.jpg";
-
   const borderWidth = Math.max(Math.floor(size * 0.03), 2);
   const spacerWidth = Math.max(Math.floor(size * 0.02), 2);
   const innerSize = size - borderWidth * 2;
   const imageSize = innerSize - spacerWidth * 2;
-
   return (
     <div
       className={styles.avatarWrapper}
@@ -46,5 +50,4 @@ const GradientAvatar = ({ src, size = 60, alt = "avatar" }) => {
     </div>
   );
 };
-
 export default GradientAvatar;

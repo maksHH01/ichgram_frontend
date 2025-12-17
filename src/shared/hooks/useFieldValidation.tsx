@@ -4,13 +4,18 @@ import type {
   UseFormSetError,
   UseFormClearErrors,
   Control,
+  FieldValues,
 } from "react-hook-form";
 import debounce from "lodash.debounce";
 
 interface Props {
-  control: Control<any>;
-  setError: UseFormSetError<any>;
-  clearErrors: UseFormClearErrors<any>;
+  control: Control<FieldValues>;
+  setError: UseFormSetError<FieldValues>;
+  clearErrors: UseFormClearErrors<FieldValues>;
+}
+
+interface CheckResponse {
+  exists: boolean;
 }
 
 const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
@@ -31,7 +36,7 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
 
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-          const data = await res.json();
+          const data = (await res.json()) as CheckResponse;
           if (data.exists) {
             setError("email", {
               type: "manual",
@@ -41,10 +46,10 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
             clearErrors("email");
           }
         } catch (err) {
-          console.error("Ошибка при запросе check-email:", err);
+          console.error(err);
           setError("email", {
             type: "manual",
-            message: "Не удалось проверить email",
+            message: "Failed to check email",
           });
         }
       } else {
@@ -61,7 +66,7 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
 
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-          const data = await res.json();
+          const data = (await res.json()) as CheckResponse;
           if (data.exists) {
             setError("username", {
               type: "manual",
@@ -71,10 +76,10 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
             clearErrors("username");
           }
         } catch (err) {
-          console.error("Ошибка при запросе check-username:", err);
+          console.error(err);
           setError("username", {
             type: "manual",
-            message: "Не удалось проверить username",
+            message: "Failed to check username",
           });
         }
       } else {

@@ -21,7 +21,10 @@ export const useLikePost = (
         return like === currentUser._id.toString();
       }
       if (like && typeof like === "object" && "_id" in like) {
-        return (like._id as any).toString() === currentUser._id.toString();
+        return (
+          (like as { _id: string })._id.toString() ===
+          currentUser._id.toString()
+        );
       }
       return false;
     })
@@ -31,9 +34,9 @@ export const useLikePost = (
     if (!post) return;
     try {
       const updated = await getPostById(post._id);
-      setPost?.(updated);
+      if (setPost) setPost(updated);
     } catch (err) {
-      console.error("Ошибка при синхронизации поста:", err);
+      console.error(err);
     }
   }, [post, setPost]);
 
@@ -44,7 +47,7 @@ export const useLikePost = (
       await likePost(post._id, token);
       await syncPost();
     } catch (err) {
-      console.error("Ошибка при лайке поста:", err);
+      console.error(err);
     } finally {
       setIsProcessing(false);
     }
@@ -57,7 +60,7 @@ export const useLikePost = (
       await unlikePost(post._id, token);
       await syncPost();
     } catch (err) {
-      console.error("Ошибка при удалении лайка:", err);
+      console.error(err);
     } finally {
       setIsProcessing(false);
     }

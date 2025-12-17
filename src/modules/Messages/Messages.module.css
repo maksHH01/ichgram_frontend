@@ -284,3 +284,67 @@
 .deleteBtn:hover .deleteIcon {
   opacity: 1;
 }
+
+.chatNameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.chatItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chatInfo {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  overflow: hidden;
+}
+
+.chatRowTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.chatName {
+  font-weight: 600;
+  color: #000;
+  font-size: 14px;
+}
+
+.chatName.unread {
+  font-weight: 700;
+}
+
+.chatLast {
+  font-size: 13px;
+  color: #8e8e8e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatLast.unread {
+  color: #000;
+  font-weight: 500;
+}
+
+.unreadDot {
+  width: 8px;
+  height: 8px;
+  background-color: #0095f6;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: 10px;
+}

@@ -5,9 +5,6 @@ export interface Comment {
     avatarUrl: string;
   };
   text: string;
-  likes: Array<
-    | string // если просто id
-    | { _id: string; username?: string; avatarUrl?: string } // если объект пользователя
-  >;
+  likes: Array<string | { _id: string; username?: string; avatarUrl?: string }>;
   createdAt: string;
 }

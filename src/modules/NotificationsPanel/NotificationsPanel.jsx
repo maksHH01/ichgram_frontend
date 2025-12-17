@@ -14,12 +14,41 @@ const NotificationsPanel = ({ isOpen, onClose, token, setUnreadCount }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const filterAndDeduplicate = (rawNotifications) => {
+    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+    const recent = rawNotifications.filter((n) => {
+      return new Date(n.createdAt).getTime() > sevenDaysAgo;
+    });
+
+    const uniqueMap = new Map();
+
+    recent.forEach((n) => {
+      const senderId = n.sender?._id || n.sender;
+      const postId = n.post?._id || n.post || "general";
+      const key = `${senderId}-${n.type}-${postId}`;
+
+      if (!uniqueMap.has(key)) {
+        uniqueMap.set(key, n);
+      } else {
+        const existing = uniqueMap.get(key);
+        if (new Date(n.createdAt) > new Date(existing.createdAt)) {
+          uniqueMap.set(key, n);
+        }
+      }
+    });
+
+    return Array.from(uniqueMap.values()).sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  };
+
   useEffect(() => {
     if (!token) return;
     const { id: userId } = jwtDecode(token);
     const socket = io(BACKEND_URL, {
       path: "/socket.io",
-      transports: ["websocket"],
+      transports: ["polling", "websocket"],
       auth: { token },
     });
 
@@ -27,9 +56,14 @@ const NotificationsPanel = ({ isOpen, onClose, token, setUnreadCount }) => {
 
     socket.on("newNotification", (notification) => {
       setNotifications((prev) => {
-        if (prev.some((n) => n._id === notification._id)) return prev;
-        setUnreadCount((count) => count + 1);
-        return [notification, ...prev];
+        const combined = [notification, ...prev];
+        const processed = filterAndDeduplicate(combined);
+
+        const isActuallyNew = processed.some((n) => n._id === notification._id);
+        if (isActuallyNew) {
+          setUnreadCount((count) => count + 1);
+        }
+        return processed;
       });
     });
 
@@ -40,29 +74,39 @@ const NotificationsPanel = ({ isOpen, onClose, token, setUnreadCount }) => {
     if (!isOpen) return;
     getNotifications(token)
       .then((data) => {
+        if (!Array.isArray(data)) return;
+
         const normalized = data.map((n) => ({
           ...n,
           post:
             typeof n.post === "string" ? { _id: n.post, imageUrl: "" } : n.post,
         }));
-        setNotifications(normalized);
+
+        const cleanList = filterAndDeduplicate(normalized);
+        setNotifications(cleanList);
       })
       .catch(console.error);
   }, [isOpen, token]);
 
   useEffect(() => {
-    if (isOpen) {
-      fetch(`${BACKEND_URL}/api/notifications/read`, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-      }).then(() => setUnreadCount(0));
+    if (isOpen && notifications.length > 0) {
+      const hasUnread = notifications.some((n) => !n.isRead);
+      if (hasUnread) {
+        fetch(`${BACKEND_URL}/api/notifications/read`, {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` },
+        }).then(() => {
+          setUnreadCount(0);
+        });
+      }
     }
-  }, [isOpen, token, setUnreadCount]);
+  }, [isOpen, token, setUnreadCount, notifications.length]);
 
   const handleGoToUser = (username) => {
     onClose();
     navigate(`/users/${username}`);
   };
+
   const handleGoToPost = (postId) => {
     if (!postId) return;
     onClose();
@@ -88,23 +132,31 @@ const NotificationsPanel = ({ isOpen, onClose, token, setUnreadCount }) => {
 
   return (
     <DropdownPanel isOpen={isOpen} onClose={onClose} title="Notifications">
+      {notifications.length > 0 && (
+        <div className={styles.newHeaderLabel}>New</div>
+      )}
+
       {notifications.length === 0 ? (
         <p className={styles.subheading}>No new notifications</p>
       ) : (
         <ul className={styles.list}>
           {notifications.map((n) => (
             <li key={n._id} className={styles.notification}>
-              <img
-                onClick={() => n.sender && handleGoToUser(n.sender.username)}
-                style={{ cursor: n.sender ? "pointer" : "default" }}
-                src={
-                  n.sender?.avatarUrl
-                    ? `${BACKEND_URL}${n.sender.avatarUrl}`
-                    : "/no-profile-pic-icon-11.jpg"
-                }
-                alt="avatar"
-                className={styles.avatar}
-              />
+              <div className={styles.avatarWrapper}>
+                <img
+                  onClick={() => n.sender && handleGoToUser(n.sender.username)}
+                  style={{ cursor: n.sender ? "pointer" : "default" }}
+                  src={
+                    n.sender?.avatarUrl
+                      ? `${BACKEND_URL}${n.sender.avatarUrl}`
+                      : "/no-profile-pic-icon-11.jpg"
+                  }
+                  alt="avatar"
+                  className={styles.avatar}
+                />
+
+                {!n.isRead && <div className={styles.newBadge}></div>}
+              </div>
 
               <div className={styles.text}>
                 <span
@@ -115,7 +167,11 @@ const NotificationsPanel = ({ isOpen, onClose, token, setUnreadCount }) => {
                   {n.sender?.username || "Unknown User"}
                 </span>{" "}
                 {renderNotificationText(n)}
-                <span className={styles.time}>{getDateLabel(n.createdAt)}</span>
+                <div className={styles.metaInfo}>
+                  <span className={styles.time}>
+                    {getDateLabel(n.createdAt)}
+                  </span>
+                </div>
               </div>
 
               {n.post?._id && (

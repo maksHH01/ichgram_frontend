@@ -6,6 +6,7 @@ import ScrollToTop from "./shared/components/ScrollToTop/ScrollToTop";
 
 import { selectToken } from "./redux/auth/auth-selectors";
 import { logout, getCurrent } from "./redux/auth/auth-thunks";
+import type { AppDispatch } from "./redux/store";
 
 import Navigation from "./modules/Navigation";
 import Footer from "./modules/Footer/Footer";
@@ -15,7 +16,7 @@ import Search from "./modules/Search/Search";
 
 import { setAuthHeader } from "./shared/api/setAuthHeader";
 
-import { getNotifications } from "./shared/api/notifications-api";
+import { getNotifications, Notification } from "./shared/api/notifications-api";
 
 import "./shared/styles/reset.css";
 import "./shared/styles/variables.css";
@@ -24,14 +25,14 @@ import "./shared/styles/common.css";
 import styles from "./App.module.css";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const token = useSelector(selectToken);
 
-  const [openPanel, setOpenPanel] = useState(null);
+  const [openPanel, setOpenPanel] = useState<string | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const togglePanel = (panel) => {
+  const togglePanel = (panel: string) => {
     setOpenPanel((prev) => (prev === panel ? null : panel));
   };
 
@@ -42,11 +43,12 @@ function App() {
 
     dispatch(getCurrent())
       .unwrap()
-      .catch((err) => {
+      .catch((err: unknown) => {
+        const errorString = String(err);
         if (
-          err === "jwt expired" ||
-          err === "Unauthorized" ||
-          (typeof err === "string" && err.includes("401"))
+          errorString.includes("jwt expired") ||
+          errorString.includes("Unauthorized") ||
+          errorString.includes("401")
         ) {
           dispatch(logout());
           navigate("/login");
@@ -54,7 +56,7 @@ function App() {
       });
 
     getNotifications(token)
-      .then((data) => {
+      .then((data: Notification[]) => {
         if (!Array.isArray(data)) {
           console.warn("Получен некорректный формат уведомлений:", data);
           return;
@@ -63,7 +65,7 @@ function App() {
         const unread = data.filter((n) => !n.isRead).length;
         setUnreadCount(unread);
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.error("Ошибка загрузки уведомлений:", err);
       });
   }, [token, dispatch, navigate]);

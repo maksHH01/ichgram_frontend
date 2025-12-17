@@ -27,6 +27,45 @@ export const getDateLabel = (createdAt) => {
   return `${daysAgo} ${daysAgo === 1 ? "Day" : "Days"} ago`;
 };
 
+const PostCaption = ({ username, text }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const MAX_LENGTH = 50;
+
+  if (!text) return null;
+
+  if (text.length <= MAX_LENGTH) {
+    return (
+      <p style={{ cursor: "default", padding: "4px 0px" }}>
+        <strong>{username}</strong> {text}
+      </p>
+    );
+  }
+
+  return (
+    <p style={{ cursor: "default", padding: "4px 0px" }}>
+      <strong>{username}</strong>{" "}
+      {isExpanded ? text : `${text.slice(0, MAX_LENGTH)}...`}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        style={{
+          border: "none",
+          background: "none",
+          color: "#8e8e8e",
+          cursor: "pointer",
+          marginLeft: "4px",
+          padding: 0,
+          fontSize: "inherit",
+          fontFamily: "inherit",
+          fontWeight: "600",
+        }}
+      >
+        {isExpanded ? "less" : "more"}
+      </button>
+    </p>
+  );
+};
+
 const SinglePost = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -130,6 +169,40 @@ const SinglePost = () => {
     }
   };
 
+  const onToggleFollow = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!author || !currentUser) return;
+
+    if (isFollowing) {
+      setAuthor((prev) => ({
+        ...prev,
+        followers: (prev.followers || []).filter((id) => {
+          const followerId = typeof id === "object" ? id._id : id;
+          return followerId !== currentUser._id;
+        }),
+      }));
+
+      try {
+        await handleUnfollow();
+      } catch (error) {
+        console.error("Unfollow failed", error);
+      }
+    } else {
+      setAuthor((prev) => ({
+        ...prev,
+        followers: [...(prev.followers || []), currentUser._id],
+      }));
+
+      try {
+        await handleFollow();
+      } catch (error) {
+        console.error("Follow failed", error);
+      }
+    }
+  };
+
   const onClose = () => {
     navigate(-1);
   };
@@ -189,7 +262,7 @@ const SinglePost = () => {
                     <span>•</span>
                     <button
                       className={styles.followBtn}
-                      onClick={isFollowing ? handleUnfollow : handleFollow}
+                      onClick={onToggleFollow}
                     >
                       {isFollowing ? "Unfollow" : "Follow"}
                     </button>
@@ -215,10 +288,10 @@ const SinglePost = () => {
                     size={28}
                   />
                   <span className={styles.userPost}>
-                    <p style={{ cursor: "default", padding: "4px 0px" }}>
-                      <strong>{author.username}</strong>{" "}
-                      {post.caption || "No description"}
-                    </p>
+                    <PostCaption
+                      username={author.username}
+                      text={post.caption || ""}
+                    />
                   </span>
                 </div>
               )}

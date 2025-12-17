@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import styles from "./ConfirmationPlaceholder.module.css";
 
-const ConfirmationPlaceholder = ({
+interface ConfirmationPlaceholderProps {
+  imageSrc?: string;
+  title: string;
+  message: string;
+  showBackButton?: boolean;
+}
+
+const ConfirmationPlaceholder: React.FC<ConfirmationPlaceholderProps> = ({
   imageSrc = "/illo-confirm-refresh-light.png",
   title,
   message,

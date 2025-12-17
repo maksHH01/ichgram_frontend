@@ -23,12 +23,12 @@ export const useLikeComment = (
   };
 
   const syncPost = useCallback(async () => {
-    if (!post) return;
+    if (!post || !setPost) return;
     try {
       const updated = await getPostById(post._id);
-      setPost?.(updated);
+      setPost(updated);
     } catch (err) {
-      console.error("Ошибка при синхронизации поста:", err);
+      console.error(err);
     }
   }, [post, setPost]);
 
@@ -40,7 +40,7 @@ export const useLikeComment = (
         await likeComment(post._id, commentId, token);
         await syncPost();
       } catch (err) {
-        console.error("Ошибка при лайке комментария:", err);
+        console.error(err);
       } finally {
         setIsProcessing(false);
       }
@@ -56,7 +56,7 @@ export const useLikeComment = (
         await unlikeComment(post._id, commentId, token);
         await syncPost();
       } catch (err) {
-        console.error("Ошибка при удалении лайка комментария:", err);
+        console.error(err);
       } finally {
         setIsProcessing(false);
       }

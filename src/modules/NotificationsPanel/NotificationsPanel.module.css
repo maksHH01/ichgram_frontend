@@ -45,3 +45,41 @@
   border-radius: 8px;
   object-fit: cover;
 }
+
+.avatarWrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.newBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #0095f6;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.metaInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.newText {
+  color: #0095f6;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.newHeaderLabel {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin: 16px 0px 20px 0px;
+  padding-bottom: 5px;
+}
