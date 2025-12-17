@@ -15,6 +15,8 @@ import Search from "./modules/Search/Search";
 
 import { setAuthHeader } from "./shared/api/setAuthHeader";
 
+import { getNotifications } from "./shared/api/notifications-api";
+
 import "./shared/styles/reset.css";
 import "./shared/styles/variables.css";
 import "./shared/styles/common.css";
@@ -51,15 +53,19 @@ function App() {
         }
       });
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
+    getNotifications(token)
       .then((data) => {
+        if (!Array.isArray(data)) {
+          console.warn("Получен некорректный формат уведомлений:", data);
+          return;
+        }
+
         const unread = data.filter((n) => !n.isRead).length;
         setUnreadCount(unread);
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error("Ошибка загрузки уведомлений:", err);
+      });
   }, [token, dispatch, navigate]);
 
   return (

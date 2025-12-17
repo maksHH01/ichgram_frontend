@@ -89,6 +89,8 @@
 .caption {
   padding: 10px 0px;
   font-size: 14px;
+  display: flex;
+  gap: 5px;
 }
 
 .comment {

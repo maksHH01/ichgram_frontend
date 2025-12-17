@@ -7,15 +7,15 @@ const Button = ({
   loading = false,
   disabled = false,
   type = "button",
-  onClick,
   className,
+  ...rest
 }) => {
   return (
     <button
       type={type}
       className={`${styles.button} ${styles[color]} ${className || ""}`}
       disabled={disabled || loading}
-      onClick={onClick}
+      {...rest}
     >
       {loading ? "Loading..." : text}
     </button>

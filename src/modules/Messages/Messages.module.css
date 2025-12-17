@@ -68,20 +68,13 @@
   text-overflow: ellipsis;
 }
 
-/* .chatWindow {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-} */
-
 .chatWindow {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: #fff;
-  height: 100vh; /* Фиксируем высоту на весь экран */
-  overflow: hidden; /* Запрещаем скролл самого контейнера */
+  height: 100vh;
+  overflow: hidden;
 }
 
 .chatHeader {
@@ -141,12 +134,25 @@
   font-size: 14px;
   border: none;
   border-radius: 8px;
+
   background: #f2f2f2;
   color: #111;
-  cursor: default;
-  max-width: 170px;
-  width: 100%;
   font-weight: 700;
+
+  width: 100%;
+  max-width: 170px;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.viewProfile:hover {
+  background-color: #dbdbdb;
+}
+
+.viewProfile:active {
+  background-color: #cccccc;
+  transform: scale(0.98);
 }
 
 .chatDate {
@@ -157,24 +163,11 @@
   font-weight: 600;
 }
 
-/* .chatMessages {
-  flex: 1;
-  padding: 16px 16px 40px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  gap: 17px;
-} */
-
 .chatMessages {
-  flex: 1; /* Занимает всё свободное место между шапкой и инпутом */
+  flex: 1;
 
-  /* 👇 ГЛАВНЫЕ ИЗМЕНЕНИЯ 👇 */
-  overflow-y: auto; /* Включает скролл, если сообщений много */
-  min-height: 0; /* Критически важно для Flexbox, чтобы скролл работал корректно */
-
-  /* Убираем justify-content: end, иначе при скролле верхняя часть (Hero) может обрезаться */
-  /* justify-content: end; <--- УДАЛИ ЭТУ СТРОКУ */
+  overflow-y: auto;
+  min-height: 0;
 
   padding: 16px 16px 20px 16px;
   display: flex;
@@ -182,7 +175,6 @@
   gap: 17px;
 }
 
-/* Тонкий скроллбар для Chrome/Safari/Edge */
 .chatMessages::-webkit-scrollbar {
   width: 6px;
 }
@@ -204,7 +196,7 @@
 
 .leftRow {
   display: flex;
-  /* align-items: center; */
+
   justify-content: flex-start;
 }
 
@@ -255,4 +247,40 @@
   outline: none;
   display: block;
   margin: 0 auto;
+}
+
+.messageContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.deleteIcon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.row:hover .deleteBtn {
+  opacity: 1;
+}
+
+.deleteBtn:hover .deleteIcon {
+  opacity: 1;
 }

@@ -59,7 +59,7 @@ const Profile = () => {
         const freshUser = await getUserByUsername(username);
         setUser(freshUser);
       } catch (err) {
-        console.error("Error loading profile:", err);
+        console.error(err);
       }
     };
 
@@ -67,7 +67,16 @@ const Profile = () => {
   }, [username, dispatch, currentUser, posts.length]);
 
   const handleMessageClick = () => {
-    navigate("/messages");
+    navigate("/messages", {
+      state: {
+        startChatWith: {
+          id: user._id,
+          username: user.username,
+          avatarUrl: user.avatarUrl,
+          fullname: user.fullname,
+        },
+      },
+    });
   };
 
   if (!user) return <p>Loading profile...</p>;

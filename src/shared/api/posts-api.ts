@@ -57,7 +57,7 @@ export const likeComment = async (
   token: string
 ) => {
   const { data } = await backendInstance.post(
-    `/posts/${postId}/comments/${commentId}/like`,
+    `/comments/${commentId}/like`,
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -71,7 +71,7 @@ export const unlikeComment = async (
   token: string
 ) => {
   const { data } = await backendInstance.post(
-    `/posts/${postId}/comments/${commentId}/unlike`,
+    `/comments/${commentId}/unlike`,
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
