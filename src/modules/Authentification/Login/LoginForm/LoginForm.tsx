@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import TextField from "../../../../shared/components/TextField/TextField";
 import Button from "../../../../shared/components/Button/Button";
 import loginSchema from "./loginSchema";
-import type { TypeOf } from "zod";
 
+import type { z } from "zod";
 import styles from "../../Authentificate.module.css";
 
-type LoginFormInputs = TypeOf<typeof loginSchema>;
+type LoginFormInputs = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
   submitForm: (
@@ -25,10 +25,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ submitForm, loading }) => {
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    clearErrors,
+    formState: { errors, isSubmitted },
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
-    mode: "onChange",
+    mode: "onSubmit",
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
@@ -36,13 +37,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ submitForm, loading }) => {
 
     if (result.success) {
       reset();
-    } else if (result.error) {
-      const field = result.error.toLowerCase().includes("password")
-        ? "password"
-        : "identifier";
-      setError(field as keyof LoginFormInputs, {
+    } else {
+      setError("root", {
         type: "server",
-        message: result.error,
+        message: "Invalid login or password",
       });
     }
   };
@@ -53,21 +51,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ submitForm, loading }) => {
         <TextField
           placeholder="Username or Email"
           type="text"
-          {...register("identifier")}
+          {...register("identifier", {
+            onChange: () => clearErrors(),
+          })}
         />
-        {errors.identifier && (
+        {isSubmitted && errors.identifier && (
           <p className={styles.errorMessage}>{errors.identifier.message}</p>
         )}
 
         <TextField
           placeholder="Password"
           type="password"
-          {...register("password")}
+          {...register("password", {
+            onChange: () => clearErrors(),
+          })}
         />
-        {errors.password && (
+        {isSubmitted && errors.password && (
           <p className={styles.errorMessage}>{errors.password.message}</p>
         )}
       </div>
+
+      {errors.root && (
+        <p className={styles.errorMessage}>{errors.root.message}</p>
+      )}
 
       <Button type="submit" text="Log in" color="primary" loading={loading} />
 
