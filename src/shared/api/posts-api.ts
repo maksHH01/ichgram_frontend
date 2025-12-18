@@ -51,7 +51,11 @@ export const unlikePost = async (postId: string, token: string) => {
   );
   return data;
 };
-export const likeComment = async (commentId: string, token: string) => {
+export const likeComment = async (
+  _postId: string,
+  commentId: string,
+  token: string
+) => {
   const { data } = await backendInstance.post(
     `/comments/${commentId}/like`,
     {},
@@ -61,7 +65,11 @@ export const likeComment = async (commentId: string, token: string) => {
   return data;
 };
 
-export const unlikeComment = async (commentId: string, token: string) => {
+export const unlikeComment = async (
+  _postId: string,
+  commentId: string,
+  token: string
+) => {
   const { data } = await backendInstance.post(
     `/comments/${commentId}/unlike`,
     {},
