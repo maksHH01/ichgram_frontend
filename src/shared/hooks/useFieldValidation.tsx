@@ -1,17 +1,17 @@
 import { useEffect } from "react";
-import { useWatch } from "react-hook-form";
-import type {
+import {
+  useWatch,
+  Control,
   UseFormSetError,
   UseFormClearErrors,
-  Control,
-  FieldValues,
 } from "react-hook-form";
 import debounce from "lodash.debounce";
+import type { SignupFormInputs } from "../../modules/Authentification/Signup/SignupForm/types";
 
 interface Props {
-  control: Control<FieldValues>;
-  setError: UseFormSetError<FieldValues>;
-  clearErrors: UseFormClearErrors<FieldValues>;
+  control: Control<SignupFormInputs>;
+  setError: UseFormSetError<SignupFormInputs>;
+  clearErrors: UseFormClearErrors<SignupFormInputs>;
 }
 
 interface CheckResponse {
@@ -35,8 +35,8 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
           });
 
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
           const data = (await res.json()) as CheckResponse;
+
           if (data.exists) {
             setError("email", {
               type: "manual",
@@ -45,8 +45,7 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
           } else {
             clearErrors("email");
           }
-        } catch (err) {
-          console.error(err);
+        } catch {
           setError("email", {
             type: "manual",
             message: "Failed to check email",
@@ -65,8 +64,8 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
           });
 
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
           const data = (await res.json()) as CheckResponse;
+
           if (data.exists) {
             setError("username", {
               type: "manual",
@@ -75,8 +74,7 @@ const useFieldValidation = ({ control, setError, clearErrors }: Props) => {
           } else {
             clearErrors("username");
           }
-        } catch (err) {
-          console.error(err);
+        } catch {
           setError("username", {
             type: "manual",
             message: "Failed to check username",

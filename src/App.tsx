@@ -24,15 +24,17 @@ import "./shared/styles/common.css";
 
 import styles from "./App.module.css";
 
+type PanelType = "search" | "notifications" | null;
+
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const token = useSelector(selectToken);
 
-  const [openPanel, setOpenPanel] = useState<string | null>(null);
+  const [openPanel, setOpenPanel] = useState<PanelType>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const togglePanel = (panel: string) => {
+  const togglePanel = (panel: "search" | "notifications") => {
     setOpenPanel((prev) => (prev === panel ? null : panel));
   };
 
