@@ -52,7 +52,7 @@ export const unlikePost = async (postId: string, token: string) => {
   return data;
 };
 export const likeComment = async (
-  postId: string,
+  _postId: string,
   commentId: string,
   token: string
 ) => {
@@ -66,7 +66,7 @@ export const likeComment = async (
 };
 
 export const unlikeComment = async (
-  postId: string,
+  _postId: string,
   commentId: string,
   token: string
 ) => {
