@@ -10,7 +10,7 @@
 
 .comment {
   display: flex;
-  align-items: center;
+  align-items: self-start;
 
   gap: 12px;
   padding: 0px 10px;
@@ -21,7 +21,7 @@
   flex: 1;
   display: flex;
   /* flex-direction: column; */
-  align-items: center;
+  align-items: self-start;
   gap: 4px;
   word-break: break-word;
 }
@@ -57,4 +57,16 @@
   height: 18px;
   user-select: none;
   pointer-events: none;
+}
+
+.commentTextWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.commentMeta {
+  display: flex;
+  gap: 15px;
 }
